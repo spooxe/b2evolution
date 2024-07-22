@@ -400,7 +400,7 @@ function system_check_install_removed()
 
 
 /**
- * @return boolean true if DB supports UTF8
+ * @return boolean true if DB supports UTF8  extended to utf8mb4
  */
 function system_check_db_utf8()
 {
@@ -414,7 +414,7 @@ function system_check_db_utf8()
 	$DB->show_errors = false;
 	$DB->halt_on_error = false;
 	$current_connection_charset = $DB->get_connection_charset();
-	$ok = ( $DB->set_connection_charset( 'utf8' ) && $DB->is_expected_connection_charset( 'utf8' ) );
+	$ok = ( $DB->set_connection_charset( 'utf8mb4' ) && $DB->is_expected_connection_charset( 'utf8mb4' ) );
 	$DB->set_connection_charset( $current_connection_charset );
 	$DB->show_errors = $save_show_errors;
 	$DB->halt_on_error = $save_halt_on_error;
@@ -580,7 +580,7 @@ function system_check_charset_update()
 {
 	global $DB, $evo_charset, $db_config, $tableprefix;
 
-	$expected_connection_charset = DB::php_to_mysql_charmap( $evo_charset );
+	$expected_connection_charset = DB::php_to_mysql_charmap( 'utf8mb4' );
 
 	$curr_db_charset = $DB->get_var( 'SELECT default_character_set_name
 		FROM information_schema.SCHEMATA

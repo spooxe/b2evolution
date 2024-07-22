@@ -22,6 +22,8 @@ load_class( 'slugs/model/_slug.class.php', 'Slug' );
 load_class( 'links/model/_linkowner.class.php', 'LinkOwner' );
 load_class( 'links/model/_linkitem.class.php', 'LinkItem' );
 
+
+
 /**
  * Item Class
  *
@@ -29,6 +31,8 @@ load_class( 'links/model/_linkitem.class.php', 'LinkItem' );
  */
 class Item extends ItemLight
 {
+	
+
 	/**
 	 * Creation date (timestamp)
 	 * @var integer
@@ -347,6 +351,25 @@ class Item extends ItemLight
 	 * @var array
 	 */
 	var $revisions;
+    /**dynamic property*/
+    var $has_proposed_change;
+    var $orders_per_coll;
+    var $cache_has_content_parts;
+    var $renderers_validated;
+    var $pages;
+    var $switchable_params;
+    var $custom_fields;
+    var $custom_fields_loaded_ityp_ID;
+    
+    /**dynamic property*/
+    var $check_proposed_change_restriction;
+    var $slugs;
+    var $dbchanges_custom_fields;
+    var $AfterItemUpdate_is_executed;
+    var $previous_urltitle;
+
+    
+
 
 	/**
 	 * Constructor
@@ -13180,7 +13203,7 @@ class Item extends ItemLight
 	 *
 	 * @return boolean
 	 */
-	function can_vote()
+      function can_vote()
 	{
 		if( empty( $this->ID ) )
 		{	// Item is not created yet:
@@ -13870,8 +13893,18 @@ class Item extends ItemLight
 		{	// User is not logged in
 			return;
 		}
+        
+		#$item_user_tags = trim( $this->get_setting( 'user_tags' ), ' ,' );
+        $userTags = $this->get_setting('user_tags');
 
-		$item_user_tags = trim( $this->get_setting( 'user_tags' ), ' ,' );
+        if ($userTags !== null) {
+            $item_user_tags = trim($userTags, ' ,');
+            } else {
+             // Handle the case where the setting is null, for example:
+             $item_user_tags = "Default Value"; // Or any other appropriate action
+}    
+    
+    
 		if( empty( $item_user_tags ) )
 		{	// This Item has no tags for users:
 			return;

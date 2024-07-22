@@ -15,6 +15,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 
 load_class( 'widgets/model/_widget.class.php', 'ComponentWidget' );
 
+
 /**
  * ComponentWidget Class
  *
@@ -141,13 +142,13 @@ class item_vote_Widget extends ComponentWidget
 		{	// Use a specific Item:
 			$widget_Item = & $this->disp_params['Item'];
 		}
-
-		if( empty( $widget_Item ) || ! $widget_Item->can_vote() )
+         
+		if( empty( $widget_Item ) || !$widget_Item->can_vote() )
 		{	// Don't display the voting panel if a voting on the item is not allowed by some reason:
 			$this->display_debug_message( 'Widget "'.$this->get_name().'" is hidden because a voting on the item is not allowed by some reason.' );
 			return false;
 		}
-
+         
 		echo add_tag_class( $this->disp_params['block_start'], 'clearfix' );
 		echo $this->disp_params['block_body_start'];
 

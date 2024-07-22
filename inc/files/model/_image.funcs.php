@@ -443,7 +443,7 @@ function generate_thumb( $src_imh, $thumb_type, $thumb_width, $thumb_height, $th
 	imagefill($dest_imh, 0, 0, imagecolortransparent($dest_imh, imagecolorallocatealpha($dest_imh, 0, 0, 0, 127)));
 	imagesavealpha($dest_imh, true);
 
-	if( ! imagecopyresampled( $dest_imh, $src_imh, 0, 0, $src_x, $src_y, $dest_width, $dest_height, $src_width, $src_height ) )
+	if( ! imagecopyresampled( $dest_imh, $src_imh, 0, 0, $src_x, $src_y, (int) round($dest_width), (int)round($dest_height), (int) round ($src_width),(int) round($src_height) ) )
 	{
 		return array( '!GD-library internal error (resample)', $dest_imh );
 	}

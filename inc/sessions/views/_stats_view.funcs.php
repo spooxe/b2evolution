@@ -29,8 +29,8 @@ function hits_results( & $Results, $params = array() )
 	global $blog, $sec_ID, $Session, $sess_ID;
 	global $preset_results_title, $preset_referer_type, $preset_filter_all_url;
 	global $hide_columns, $admin_url;
-
-	$hide_columns = explode( ',', $hide_columns );
+     //Deprecated: explode(): Passing null to parameter #2 ($string)
+	$hide_columns = is_string($hide_columns) ? explode(',', $hide_columns) : [];
 
 	$Results->title = isset( $preset_results_title ) ? $preset_results_title : T_('Recent hits').get_manual_link( 'recent-hits-list' );
 

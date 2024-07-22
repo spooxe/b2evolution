@@ -28,6 +28,8 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  */
 class User extends DataObject
 {
+		/**dynamic property*/
+		private $previous_pass_driver;
 	//var $postcode;
 	var $age_min;
 	var $age_max;
@@ -192,6 +194,12 @@ class User extends DataObject
 	 * @var array
 	 */
 	var $newsletter_subscription_changed_values = array();
+    
+    var $organizations;
+    var $field_url;
+    /**dynamic property*/
+    public $dbchanges_flags;
+    public $user_tags;
 
 	/**
 	 * Constructor

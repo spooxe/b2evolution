@@ -79,6 +79,8 @@ class idna_convert
     private $_ncount = 588;   // _vcount * _tcount
     private $_scount = 11172; // _lcount * _tcount * _vcount
     private $_error = false;
+    /**dynamic property*/
+    private $slast;
 
     // See {@link set_paramter()} for details of how to change the following
     // settings from within your script / application
@@ -369,6 +371,7 @@ class idna_convert
         if ($delim_pos > strlen($this->_punycode_prefix)) {
             for ($k = strlen($this->_punycode_prefix); $k < $delim_pos; ++$k) {
                 $decoded[] = ord($encoded[$k]);
+                
             }
         }
         $deco_len = count($decoded);

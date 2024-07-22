@@ -23,6 +23,9 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  */
 class ItemType extends DataObject
 {
+	/**dynamic property*/
+	private $enabled_colls;
+	
 	var $name;
 	var $description;
 	var $usage;

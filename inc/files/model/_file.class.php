@@ -32,6 +32,8 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  */
 class File extends DataObject
 {
+		/**dynamic property*/
+		private $_type;
 	/**
 	 * ID of user that created/uploaded the file
 	 * @var integer
@@ -231,6 +233,8 @@ class File extends DataObject
 	 * @var Filetype
 	 */
 	var $Filetype;
+    /**dynamic property*/
+    var $votes_count;
 
 
 	/**
@@ -1012,6 +1016,7 @@ class File extends DataObject
 
 		if( $this->ID && // File is stored in DB before
 		    $this->load_meta() && // Meta data was loaded successfully
+            $this->ts = ($this->ts ?? '') && 
 		    $this->_lastmod_ts != strtotime( $this->ts ) )
 		{	// We must update timestamp in DB if it is defferent than last modification date of this File on DISK:
 			$this->set( 'ts', date2mysql( $this->_lastmod_ts ) );

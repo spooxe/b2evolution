@@ -60,6 +60,8 @@ function score_text( $text, $search_term, $words = array(), $quoted_terms = arra
 	$all_whole_word_match = true;
 	foreach( $words as $word )
 	{
+        /**coalescing operator*/
+        $text = $text ?? '';
 		$count = empty( $word ) ? 0 : substr_count( $text, $word );
 		if( $count === 0 )
 		{

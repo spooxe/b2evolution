@@ -14,6 +14,7 @@
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
 
+
 load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
 
 
@@ -136,6 +137,11 @@ class ItemLight extends DataObject
 	 * @var array
 	 */
 	var $dbchanges_flags = array();
+    /**dynamic property*/
+    var $objtype;
+    var $datestart;
+    var $is_locked;
+    var $coll_to_cat;
 
 
 	/**

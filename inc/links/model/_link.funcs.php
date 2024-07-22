@@ -541,7 +541,7 @@ function link_actions( $link_ID, $row_idx_type = '', $link_type = 'item' )
 		$r .= ' <a href="'.$admin_url.'?ctrl=files&amp;root='.$current_File->get_FileRoot()->ID
 					.'&amp;path='.rawurlencode( $current_File->get_dir_rel_path() )
 					.'&amp;fm_selected[]='.rawurlencode( $current_File->get_rdfp_rel_path() )
-					.'&amp;action=edit_properties&amp;'.url_crumb( 'file' ).'"'
+                    .'&amp;action=edit_properties&amp;'.url_crumb( 'file' ).'"' 
 				.' onclick="return window.parent.file_properties( \''.$current_File->get_FileRoot()->ID.'\', \''.$rdfp_path.'\', \''.$current_File->get_rdfp_rel_path().'\', \''.$LinkOwner->type.'\', \''.$LinkOwner->get_ID().'\', \''.( is_admin_page() ? 'backoffice' : 'frontoffice' ).'\' )"'
 				.' target="_parent" title="'.format_to_output( $title, 'htmlattr' ).'">'
 			.get_icon( 'edit', 'imgtag', array( 'title' => $title ) ).'</a> ';
@@ -1021,8 +1021,11 @@ function link_add_iframe( $link_destination )
 		$path = $current_File->get_rdfp_rel_path();
 
 		// this could be made more robust
-		$link_destination = str_replace( '<a ', "<a onclick=\"return link_attachment_window( '${link_type}', '${link_owner_ID}', '${root}', '${path}' );\" ", $link_destination );
-	}
+		#$link_destination = str_replace( '<a ', "<a onclick=\"return link_attachment_window( '${link_type}', '${link_owner_ID}', '${root}', '${path}' );\" ", $link_destination );
+       # changed with next row $link_destination = str_replace( '<a ', "<a onclick=\"return link_attachment_window( '{${$link_type}}', '{${$link_owner_ID}}', '{${$root}}', '{${$path}}' );\" ", $link_destination );
+        $link_destination = str_replace('<a ', "<a onclick=\"return link_attachment_window('$link_type', '$link_owner_ID', '$root', '$path');\" ", $link_destination);
+
+    }
 
 	return $link_destination;
 }

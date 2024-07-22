@@ -988,7 +988,7 @@ function xmlrpcs_resperror( $errcode = NULL, $errmsg = NULL )
   return new xmlrpcresp( 0, $xmlrpcs_errcode, $xmlrpcs_errmsg );
 }
 
-
+/////////////////// DEBUG Deprecated
 /**
  * Create a new Comment and return an XML-RPC response
  *
@@ -1004,7 +1004,7 @@ function xmlrpcs_resperror( $errcode = NULL, $errmsg = NULL )
  *			- author_email (string)
  * @return xmlrpcmsg
  */
-function xmlrpcs_new_comment( $params = array(), & $commented_Item )
+function xmlrpcs_new_comment( & $commented_Item, $params = array() )
 {
 	global $DB, $Plugins, $Messages, $Hit, $localtimenow;
 
@@ -1209,7 +1209,8 @@ function xmlrpcs_new_comment( $params = array(), & $commented_Item )
  *			- author_email (string)
  * @return xmlrpcmsg
  */
-function xmlrpcs_edit_comment( $params = array(), & $edited_Comment )
+ ///////////////////////// DEBUG Deprecated
+function xmlrpcs_edit_comment( & $edited_Comment, $params = array() )
 {
 	global $DB, $current_User, $Messages;
 

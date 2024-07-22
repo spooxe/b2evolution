@@ -282,8 +282,16 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 			case 'US-ASCII_':
 			case 'US-ASCII_ISO-8859-1':
 			case 'UTF-8_UTF-8':
-			//case 'CP1252_CP1252':
-				$escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            // DEBUG Notice
+			//case 'CP1252_CP1252':  string $data is an URL           
+                if ($data !== null) {
+                    $escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+                    } else {
+                       // Handle the case where $data is null, depending on your requirements
+                            $escaped_data = $data; // or another default value
+                }
+
+		#		$escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
 				break;
 			case 'UTF-8_':
 			case 'UTF-8_US-ASCII':
@@ -2941,19 +2949,19 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					switch($typ)
 					{
 						case $GLOBALS['xmlrpcBase64']:
-							$rs.="<${typ}>" . base64_encode($val) . "</${typ}>";
+							$rs.="<{$typ}>" . base64_encode($val) . "</{$typ}>";
 							break;
 						case $GLOBALS['xmlrpcBoolean']:
-							$rs.="<${typ}>" . ($val ? '1' : '0') . "</${typ}>";
+							$rs.="<{$typ}>" . ($val ? '1' : '0') . "</{$typ}>";
 							break;
 						case $GLOBALS['xmlrpcString']:
 							// G. Giunta 2005/2/13: do NOT use htmlentities, since
 							// it will produce named html entities, which are invalid xml
-							$rs.="<${typ}>" . xmlrpc_encode_entitites($val, $GLOBALS['xmlrpc_internalencoding'], $charset_encoding). "</${typ}>";
+							$rs.="<{$typ}>" . xmlrpc_encode_entitites($val, $GLOBALS['xmlrpc_internalencoding'], $charset_encoding). "</{$typ}>";
 							break;
 						case $GLOBALS['xmlrpcInt']:
 						case $GLOBALS['xmlrpcI4']:
-							$rs.="<${typ}>".(int)$val."</${typ}>";
+							$rs.="<{$typ}>".(int)$val."</{$typ}>";
 							break;
 						case $GLOBALS['xmlrpcDouble']:
 							// avoid using standard conversion of float to string because it is locale-dependent,
@@ -2961,25 +2969,25 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 							// sprintf('%F') could be most likely ok but it fails eg. on 2e-14.
 							// The code below tries its best at keeping max precision while avoiding exp notation,
 							// but there is of course no limit in the number of decimal places to be used...
-							$rs.="<${typ}>".preg_replace('/\\.?0+$/','',number_format((double)$val, 128, '.', ''))."</${typ}>";
+							$rs.="<{$typ}>".preg_replace('/\\.?0+$/','',number_format((double)$val, 128, '.', ''))."</{$typ}>";
 							break;
 						case $GLOBALS['xmlrpcDateTime']:
 							if (is_string($val))
 							{
-								$rs.="<${typ}>${val}</${typ}>";
+								$rs.="<{$typ}>{$val}</{$typ}>";
 							}
 							else if($val instanceof DateTime)
 							{
-								$rs.="<${typ}>".$val->format('Ymd\TH:i:s')."</${typ}>";
+								$rs.="<{$typ}>".$val->format('Ymd\TH:i:s')."</{$typ}>";
 							}
 							else if(is_int($val))
 							{
-								$rs.="<${typ}>".strftime("%Y%m%dT%H:%M:%S", $val)."</${typ}>";
+								$rs.="<{$typ}>".strftime("%Y%m%dT%H:%M:%S", $val)."</{$typ}>";
 							}
 							else
 							{
 								// not really a good idea here: but what shall we output anyway? left for backward compat...
-								$rs.="<${typ}>${val}</${typ}>";
+								$rs.="<{$typ}>{$val}</{$typ}>";
 							}
 							break;
 						case $GLOBALS['xmlrpcNull']:
@@ -2995,7 +3003,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 						default:
 							// no standard type value should arrive here, but provide a possibility
 							// for xmlrpcvals of unknown type...
-							$rs.="<${typ}>${val}</${typ}>";
+							$rs.="<{$typ}>{$val}</{$typ}>";
 					}
 					break;
 				case 3:

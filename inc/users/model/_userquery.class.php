@@ -23,6 +23,11 @@ load_class( '_core/model/db/_filtersql.class.php', 'FilterSQL' );
  */
 class UserQuery extends FilterSQL
 {
+	/**dynamic property*/
+	private $dbtablename;
+	private $dbprefix;
+	private $dbIDname ;
+	
 	/**
 	 * Fields of users table to search by keywords
 	 *
@@ -389,10 +394,12 @@ class UserQuery extends FilterSQL
 	 */
 	function where_tag( $user_tag = NULL, $not_user_tag = NULL)
 	{
+        $user_tag = ($user_tag??'');
 		if( trim( $user_tag ) !== '' )
 		{
 			$this->add_filter_rule( 'tags', $user_tag, 'user_tagged' );
 		}
+         $not_user_tag = ($not_user_tag??'');
 		if( trim( $not_user_tag ) !== '' )
 		{
 			$this->add_filter_rule( 'tags', $not_user_tag, 'user_not_tagged' );

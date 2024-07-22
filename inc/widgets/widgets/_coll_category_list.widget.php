@@ -23,9 +23,11 @@ load_class( 'widgets/model/_widget.class.php', 'ComponentWidget' );
  *
  * @package evocore
  */
+
 class coll_category_list_Widget extends ComponentWidget
 {
 	var $icon = 'indent';
+    var $excluded_cat_IDs;
 
 	/**
 	 * Constructor

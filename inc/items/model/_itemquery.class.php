@@ -19,6 +19,7 @@ load_class( '_core/model/db/_sql.class.php', 'SQL' );
  * ItemQuery: help constructing queries on Items
  * @package evocore
  */
+ 
 class ItemQuery extends SQL
 {
 	var $p;
@@ -65,6 +66,17 @@ class ItemQuery extends SQL
 	 * @var string
 	 */
 	var $orderby_from = '';
+    /**dynamic property*/
+    var $dbtablename;
+    var $dbprefix;
+    var $dbIDname;
+    var $m;
+    var $w;
+    var $Blog;
+    var $cat_array;
+    var $cat_modifier;
+    var $assignees_logins;
+    var $author_assignee;
 
 	/**
 	 * Constructor.
@@ -73,7 +85,7 @@ class ItemQuery extends SQL
 	 * @param string Prefix of fields in the table
 	 * @param string Name of the ID field (including prefix)
 	 */
-	function __construct( $dbtablename, $dbprefix = '', $dbIDname )
+	function __construct( $dbtablename, $dbprefix, $dbIDname )
 	{
 		$this->dbtablename = $dbtablename;
 		$this->dbprefix = $dbprefix;
@@ -1414,7 +1426,7 @@ class ItemQuery extends SQL
 //			$additional_clause++;
 //		}
 //		$order_clause = implode( ',', $orderby_fields );
-
+ $this->itemtype_usage = ($this->itemtype_usage ?? '');
 		if( strpos( $this->itemtype_usage, '*featured*' ) !== false )
 		{	// If we get featured posts together with other post types(like intro) then we should order featured posts below not featured posts:
 			$order_clause = trim( 'post_featured, '.$order_clause, ', ' );

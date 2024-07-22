@@ -21,6 +21,10 @@ load_class('_core/ui/results/_results.class.php', 'Results' );
  */
 class FilteredResults extends Results
 {
+	/**dynamic property*/
+	private $preset_filters;
+	
+	
 	/**
 	 * Default filter set (used if no specific params are passed)
 	 */

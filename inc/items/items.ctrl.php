@@ -3316,7 +3316,11 @@ switch( $action )
 		$AdminUI->disp_payload_begin();
 
 		// We never allow HTML in titles, so we always encode and decode special chars.
-		$item_title = htmlspecialchars_decode( $edited_Item->get( 'title' ) );
+        if ($edited_Item->get( 'title' ) !== null){
+                $item_title = htmlspecialchars_decode( $edited_Item->get( 'title' ) );    
+        }
+        
+
 
 		$item_content = $edited_Item->get( 'content' );
 		if( $item_content === NULL )

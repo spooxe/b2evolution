@@ -29,6 +29,8 @@ require_once dirname(__FILE__).'/../_adminUI_general.class.php';
  */
 class AdminUI extends AdminUI_general
 {
+	/**dynamic property*/
+		 	 public $htmltitle;
 
 	/**
 	 * @var string Skin name, Must be the folder name of skin

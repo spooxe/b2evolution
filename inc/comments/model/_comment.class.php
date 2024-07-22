@@ -22,7 +22,10 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  * @package evocore
  */
 class Comment extends DataObject
+
 {
+    var $renderers_validated;
+    
 	/**
 	 * The item (parent) of this Comment (lazy-filled).
 	 * @see Comment::get_Item()
@@ -223,6 +226,12 @@ class Comment extends DataObject
 	 * @var integer
 	 */
 	var $temp_link_owner_ID = NULL;
+    /** dynamic property */
+    public $tmp_ID;
+    public $tmp_coll_ID;
+    public $tmp_item_ID;
+    public $tmp_type;
+    public $user_notify ;
 
 	/**
 	 * Constructor
@@ -257,7 +266,7 @@ class Comment extends DataObject
 			$this->status = $db_row->comment_status;
 			$this->author = $db_row->comment_author;
 			$this->author_email = $db_row->comment_author_email;
-			$url = trim( $db_row->comment_author_url );
+			$url = trim( (string) $db_row->comment_author_url );
 			if( ! empty($url) && ! preg_match( '~^\w+://~', $url ) )
 			{ // URL given and does not start with a protocol:
 				$url = 'http://'.$url;

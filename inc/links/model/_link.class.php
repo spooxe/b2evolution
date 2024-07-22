@@ -37,6 +37,9 @@ class Link extends DataObject
 
 	var $previous_position;
 	var $previous_order;
+    
+    /**dynamic property*/
+    var $is_single_linked_file;
 
 
 	/**

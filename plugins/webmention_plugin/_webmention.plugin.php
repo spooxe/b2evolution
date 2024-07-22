@@ -22,6 +22,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *
  * @package plugins
  */
+
 class webmention_plugin extends Plugin
 {
 	/**
@@ -37,7 +38,9 @@ class webmention_plugin extends Plugin
 	 */
 	var $group = 'ping';
 	var $number_of_installs = 1;
-
+    /**dynamic property*/
+    var $ping_service_process_message;
+    var $ping_service_setting_title;
 
 	/**
 	 * Init

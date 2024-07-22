@@ -17,6 +17,8 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  * @ingroup DifferenceEngine
  */
 class _DiffOp {
+	
+	
 	var $type;
 	var $orig;
 	var $closing;

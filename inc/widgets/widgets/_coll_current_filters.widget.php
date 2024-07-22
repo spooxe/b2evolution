@@ -144,11 +144,17 @@ class coll_current_filters_Widget extends ComponentWidget
 		}
 
 		$this->init_display( $params );
+    //Fatal error: Uncaught TypeError: array_merge(): Argument #1 must be of type array,
+// Ensure default filters are initialized as an array
+if (!isset($this->disp_params['show_filters']) || !is_array($this->disp_params['show_filters'])) {
+    $this->disp_params['show_filters'] = [];
+}
 
-		if( isset( $show_filters ) )
-		{ // Rewrite default filters by predefined
-			$this->disp_params['show_filters'] = array_merge( $this->disp_params['show_filters'], $show_filters );
-		}
+// Check if $show_filters is set and is an array
+if (isset($show_filters) && is_array($show_filters)) {
+    // Merge predefined filters with the default filters
+    $this->disp_params['show_filters'] = array_merge($this->disp_params['show_filters'], $show_filters);
+}
 
 		$filters =  implode( ' '.T_('AND').' ', $params['ItemList']->get_filter_titles( array(), array(
 				'categories_text'     => '',

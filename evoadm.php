@@ -31,6 +31,7 @@ require_once dirname(__FILE__).'/conf/_config.php';
  */
 $is_admin_page = true;
 
+
 // user must be logged in and his/her account must be validated before access to admin
 $login_required = true;
 $validate_required = true;

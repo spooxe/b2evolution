@@ -929,6 +929,8 @@ function get_directory_tree( $Root = NULL, $ads_full_path = NULL, $ads_selected_
 		{ // This is the current or parent open path
 			$dir_is_opened = true;
 
+             /**coalescing operator*/
+             $rds_rel_path = $rds_rel_path ?? '';            
 			if( $fm_highlight && $fm_highlight == substr($rds_rel_path, 0, -1) )
 			{
 				$r .= ' id="fm_highlighted"';
@@ -958,6 +960,7 @@ function get_directory_tree( $Root = NULL, $ads_full_path = NULL, $ads_selected_
 		}
 
 		// Folder Icon + Name:
+        $rds_rel_path = ($rds_rel_path??'');
 		$url = regenerate_url( 'root,path', 'root='.$Root->ID.'&amp;path='.rawurlencode( $rds_rel_path ) );
 		$label = action_icon( T_('Open this directory in the file manager'), 'folder', $url )
 			.'<a href="'.$url.'"
@@ -2551,7 +2554,7 @@ function display_dragdrop_upload_button( $params = array() )
 			{
 				window.evo_init_dragdrop_button_config = {};
 			}
-			window.evo_init_dragdrop_button_config['fieldset_<?php echo $params['fieldset_prefix'];?>'] = <?php echo evo_json_encode( $dragdrop_upload_button_config );?>;
+			window.evo_init_dragdrop_button_config['fieldset_<?php echo $params['fieldset_prefix'];?>'] = <?php echo evo_json_encode( $dragdrop_upload_button_config );?>
 			window.init_uploader( evo_init_dragdrop_button_config['fieldset_<?php echo $params['fieldset_prefix'];?>'] );
 		} );
 		</script>
@@ -2764,6 +2767,7 @@ function echo_file_properties()
 <script>
 	//<![CDATA[
 	// Window to edit file
+    
 	function file_properties( root, path, file, link_owner_type, link_owner_ID, from )
 	{
 		openModalWindow( '<span class="loader_img loader_file_edit absolute_center" title="<?php echo T_('Loading...'); ?>"></span>',
@@ -2773,11 +2777,10 @@ function echo_file_properties()
 		jQuery.ajax(
 		{
 			type: 'POST',
-			url: '<?php echo $admin_url; ?>',
+			url: '<?php echo $admin_url; ?>', 
 			data:
 			{
 				'ctrl': 'files',
-				'action': 'edit_properties',
 				'root': root,
 				'path': path,
 				'fm_selected': [ file ],
@@ -2786,6 +2789,7 @@ function echo_file_properties()
 				'link_owner_ID': typeof( link_owner_ID ) == 'undefined' ? '' : link_owner_ID,
 				'from': typeof( from ) == 'undefined' ? '' : from,
 				'crumb_file': '<?php echo get_crumb( 'file' ); ?>',
+                'action': 'edit_properties'
 			},
 			success: function( result )
 			{
@@ -2810,6 +2814,7 @@ function echo_file_properties()
 				jQuery.ajax(
 				{
 					type: 'POST',
+                    async: true,
 					url: jQuery( this ).attr( 'action' ),
 					data: jQuery( this ).serialize() + '&mode=link',
 					success: function()

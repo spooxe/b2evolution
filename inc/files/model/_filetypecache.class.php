@@ -24,6 +24,7 @@ load_class( '_core/model/dataobjects/_dataobjectcache.class.php', 'DataObjectCac
 class FiletypeCache extends DataObjectCache
 {
 	var $extension_cache = array();
+    var $mimetype_cache;
 
 	/**
 	 * Constructor

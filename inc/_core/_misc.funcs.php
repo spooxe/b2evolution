@@ -334,7 +334,8 @@ function format_to_output( $content, $format = 'htmlbody' )
 
 		case 'entityencoded':
 			// Special mode for RSS 0.92: apply renders and allow full HTML but escape it
-			$content = convert_chars($content, 'html');
+            $content = $content ?? '';
+			$content = convert_chars($content, 'html'); 
 			$content = htmlspecialchars( $content, ENT_QUOTES, $evo_charset );
 			break;
 
@@ -355,6 +356,8 @@ function format_to_output( $content, $format = 'htmlbody' )
 		case 'htmlattr':
 			// use as an attribute: strips tags and escapes quotes
 			// TODO: dh> why not just htmlspecialchars?fp> because an attribute can never contain a tag? dh> well, "onclick='return 1<2;'" would get stripped, too. I'm just saying: why mess with it, when we can just use htmlspecialchars.. fp>ok
+            /**coalescing operator*/
+            $content = $content ?? '';
 			$content = strip_tags($content);
 			$content = convert_chars($content, 'html');
 			$content = str_replace( array('"', "'"), array('&quot;', '&#039;'), $content );
@@ -364,6 +367,7 @@ function format_to_output( $content, $format = 'htmlbody' )
 		case 'formvalue':
 			// Replace special chars to &amp;, &quot;, &#039;|&apos;, &lt; and &gt; :
 			// Handles & " ' < > to &amp; &quot; &apos; &lt; &gt;
+            $content = $content ?? '';
 			$content = htmlspecialchars( $content, ENT_QUOTES | ENT_HTML5, $evo_charset );
 			break;
 
@@ -587,7 +591,7 @@ function strmaxlen( $str, $maxlen = 50, $tail = NULL, $format = 'raw', $cut_at_w
 		{
 			// Get the first character being cut off. Note: we can't use $str[index] in case of utf8 strings!
 			$first_cut_off_char = utf8_substr( $str, utf8_strlen( $str_cropped ), 1 );
-			if( ! ctype_space( $first_cut_off_char ) )
+			if( function_exists('ctype_space') && ! ctype_space( $first_cut_off_char ) )
 			{ // first character being cut off is not whitespace
 				// Get the chars as an array from the cropped string to be able to get chars by position
 				$str_cropped_chars = preg_split('//u',$str_cropped, -1, PREG_SPLIT_NO_EMPTY);
@@ -763,6 +767,7 @@ function convert_chars( $content, $flag = 'html' )
 
 	// Convert Windows CP1252 => Unicode (valid HTML)
 	// TODO: should this go to input conversions instead (?)
+    $content = ($content ?? '');
 	$content = strtr( $content, $b2_htmltranswinuni );
 
 	if( $flag == 'html' )
@@ -1581,7 +1586,7 @@ function make_clickable( $text, $moredelim = '&amp;', $callback = 'make_clickabl
 				$in_tag_quote = false;
 				// s$r .= '{'.$text[$i+1];
 
-				if( ($text[$i+1] == 'a' || $text[$i+1] == 'A') && ctype_space($text[$i+2]) )
+				if( ($text[$i+1] == 'a' || $text[$i+1] == 'A') && function_exists('ctype_space') && ctype_space($text[$i+2]) )
 				{ // opening "A" tag
 					$in_a_tag = true;
 				}
@@ -1700,6 +1705,8 @@ function date2mysql( $ts )
 function mysql2timestamp( $m, $useGM = false )
 {
 	$func = $useGM ? 'gmmktime' : 'mktime';
+    if ($m == null){ echo( 'check'); }
+    if($m !== null){
 	return $func(
 		intval( substr( $m, 11, 2 ) ),  // hour
 		intval( substr( $m, 14, 2 ) ),  // minute
@@ -1707,6 +1714,7 @@ function mysql2timestamp( $m, $useGM = false )
 		intval( substr( $m, 5, 2 ) ),   // month
 		intval( substr( $m, 8, 2 ) ),   // day
 		intval( substr( $m, 0, 4 ) ) ); // year
+    }
 }
 
 /**
@@ -6120,6 +6128,7 @@ function format_french_phone( $phone )
  */
 function get_manual_url( $topic )
 {
+    $topic = ($topic??'');
 	// fp> TODO: this below is a temmporary hack while we work on the new manual:
 	return 'http://b2evolution.net/man/'.str_replace( '_', '-', strtolower( rawurlencode( $topic ) ) );
 }
@@ -7674,7 +7683,7 @@ function int2ip( $int )
  */
 function is_valid_ip_format( $ip )
 {
-	return filter_var( $ip, FILTER_VALIDATE_IP ) !== false;
+	return function_exists('filter_var') ? filter_var( $ip, FILTER_VALIDATE_IP ) !== false : false;
 }
 
 
@@ -9008,6 +9017,7 @@ function render_inline_tags( $Object, $tags, $params = array() )
 				'after_image'              => '</div>',
 				'after'                    => '</div>',
 				'image_size'               => 'fit-400x320',
+                'image_alt'                => null,
 				'image_link_to'            => 'original', // Can be 'orginal' (image) or 'single' (this post)
 				'limit'                    => 1000, // Max # of images displayed
 			), $params );
@@ -9131,6 +9141,7 @@ function render_inline_tags( $Object, $tags, $params = array() )
 					$image_href = false;
 					$image_rel = NULL;
 					$image_additional_class = false;
+                    
 
 					if( ! empty( $inline[3] ) ) // check if second colon is present
 					{
@@ -10533,7 +10544,7 @@ function clear_ids_list( $ids_list, $separator = ',' )
 	{	// Empty list:
 		return $ids_list;
 	}
-
+   $ids_list =  ($ids_list ?? '');
 	if( strpos( $ids_list, '-' ) === 0 )
 	{	// Remove first '-' char from start, which is used for exluding list:
 		$ids_list = substr( $ids_list, 1 );

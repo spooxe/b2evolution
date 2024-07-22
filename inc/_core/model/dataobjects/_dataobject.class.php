@@ -60,6 +60,26 @@ class DataObject
 	 * Relations that will cascade deletion.
 	 */
 	var $delete_cascades = NULL;
+    
+    var $original_content;
+    var $preview_attachments;
+    var $checked_attachments;
+    var $email_is_detected;
+    
+    /**dynamic property*/
+    var $tmp_ID;
+    var $datecreated;
+    var $datemodified;
+    var $creator_user_ID;
+    var $lastedit_user_ID;
+    var $root_type;
+    var $root_ID;
+    var $path;
+    var $itm_ID;
+    var $tmp_coll_ID;
+    var $tmp_item_ID;
+    var $tmp_type;
+    public $usr_ID; // Declare the property explicitly
 
 
 	/**

@@ -25,6 +25,7 @@ load_class( '_core/model/dataobjects/_dataobjectlist2.class.php', 'DataObjectLis
  * @author asimo
  *
  */
+  
 class CommentList2 extends DataObjectList2
 {
 	/**
@@ -43,6 +44,10 @@ class CommentList2 extends DataObjectList2
 	 * Blog object this CommentList refers to
 	 */
 	var $Blog;
+     /**dynamic property*/
+    var $filterset_name;
+    var $query_is_initialized;
+    var $inlist_orders;
 
 	/**
 	 * Constructor

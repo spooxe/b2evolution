@@ -40,6 +40,11 @@ class AdminUI_general extends Menu
 	 * @var string
 	 */
 	var $pathSeparator = ' &rsaquo; ';
+	/**dynamic property*/
+	private $mode;
+	private $page_manual_slug;
+	private $displayed_sub_begin;
+	private $displayed_sub_end;
 
 	/*-------------------------------------------------------------------*/
 	/*- The members below should not get overridden in a derived class. -*/
@@ -158,6 +163,7 @@ class AdminUI_general extends Menu
 	 *
 	 */
 	var $page_manual_link = '';
+
 
 	/**
 	 * Constructor.

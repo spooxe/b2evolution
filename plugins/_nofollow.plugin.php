@@ -27,6 +27,8 @@ class nofollow_plugin extends Plugin
 	var $long_desc;
 	var $help_topic = 'tag-external-links-plugin';
 	var $number_of_installs = 1;
+    var $setting_rel_options;
+    var $setting_target_options;
 
 
 	/**

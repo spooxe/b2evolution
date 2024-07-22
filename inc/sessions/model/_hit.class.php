@@ -23,6 +23,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *
  * @package evocore
  */
+
 class Hit
 {
 	/**
@@ -227,6 +228,17 @@ class Hit
 	 * @var integer
 	 */
 	var $browser_version;
+    /**dynamic property*/
+    var $is_lynx;
+    var $is_NS4;
+    var $is_opera;
+    var $is_safari;
+    var $is_chrome;
+    var $is_macIE;
+    var $is_winIE;
+    var $is_IE;
+    var $is_gecko;
+    var $is_firefox;
 
 
 	/**
@@ -925,6 +937,7 @@ class Hit
 		}
 
 		// Insert a hit into DB table:
+        $ctrl = ($ctrl??'');$this->action = ($this->action??''); $disp = ($disp??'');
 		$sql_insert_fields = array(
 				'hit_datetime'          => 'FROM_UNIXTIME( '.$localtimenow.' )',
 				'hit_uri'               => $DB->quote( substr( $ReqURI, 0, 250 ) ), // VARCHAR(250) and likely to be longer

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file implements the PluginS class.
  *
@@ -34,8 +35,12 @@ load_class( 'plugins/_plugin.class.php', 'Plugin' );
  *
  * @package plugins
  */
-class Plugins
+ 
+
+   
+class Plugins 
 {
+	
 	/**#@+
 	 * @access private
 	 */
@@ -140,6 +145,8 @@ class Plugins
 	 * @var array
 	 */
 	var $plugin_errors = array();
+    /**dynamic property*/
+    var $captcha_data;
 
 
 	/**
@@ -407,6 +414,7 @@ class Plugins
 		}
 		else
 		{
+			
 			$Plugin = new $classname;	// COPY !
 		}
 
@@ -2010,7 +2018,7 @@ class Plugins
 	 * @params array params to set Blog and apply_rendering setting_name ( see {@link load_index_apply_rendering()} )
 	 * @return array validated array of renderer codes
 	 */
-	function validate_renderer_list( $renderers = array('default'), $params )
+	function validate_renderer_list( $renderers = array('default'), $params = array() )
 	{
 		// Init Blog and $setting_name from the given params
 		if( isset( $params['Item'] ) )
@@ -2155,7 +2163,7 @@ class Plugins
 	 * @param array If given, assume these renderers to be checked.
 	 * @param array params from where to get 'apply_rendering' setting
 	 */
-	function get_renderer_options( $current_renderers = NULL, $params )
+	function get_renderer_options( $current_renderers, $params )
 	{
 		global $inc_path, $admin_url;
 
@@ -2167,6 +2175,7 @@ class Plugins
 
 		if( ! is_array( $current_renderers ) )
 		{
+         $current_renderers = ($current_renderers??'');   
 			$current_renderers = explode( '.', $current_renderers );
 		}
 
@@ -2333,7 +2342,7 @@ class Plugins
 	 * @param array If given, assume these renderers to be checked.
 	 * @param array params from where to get 'apply_rendering' setting
 	 */
-	function get_renderer_checkboxes( $current_renderers = NULL, $params )
+	function get_renderer_checkboxes( $current_renderers, $params )
 	{
 		if( isset( $params['setting_name'] ) )
 		{	// Use the defined setting name from params:

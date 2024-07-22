@@ -31,11 +31,16 @@ load_class( '_core/model/db/_sql.class.php', 'SQL' );
  * @package evocore
  * @version beta
  */
+ 
+
+  
 class DataObjectCache
 {
 	var $dbtablename;
 	var $dbprefix;
 	var $dbIDname;
+     /**dynamic property*/
+    var $mimetype_cache;
 
 	/**
 	 * Class name of objects in this cache:
@@ -130,7 +135,7 @@ class DataObjectCache
 	 * @param mixed  The value that gets used for the "None" option in the objects options list.
 	 * @param string Additional part for SELECT clause of sql query
 	 */
-	function __construct( $objtype, $load_all, $tablename, $prefix = '', $dbIDname, $name_field = NULL, $order_by = '', $allow_none_text = NULL, $allow_none_value = '', $select = '' )
+	function __construct( $objtype, $load_all, $tablename, $prefix = '', $dbIDname ='', $name_field = NULL, $order_by = '', $allow_none_text = NULL, $allow_none_value = '', $select = '' )
 	{
 		$this->objtype = $objtype;
 		$this->load_all = $load_all;

@@ -15,7 +15,7 @@
  * @todo Add links to pages on b2evolution.net/man, once they are "clean"/tiny
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
-
+ 
 
 /**
  * Plugin Class
@@ -25,8 +25,13 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  * @abstract
  * @package plugins
  */
+ 
 class Plugin
 {
+     /**dynamic property*/
+     public $dbtable;
+     var $classfile_path;
+
 	/**#@+
 	 * Variables below MUST be overriden by plugin implementations,
 	 * either in the subclass declaration or in the subclass constructor.

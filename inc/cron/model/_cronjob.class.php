@@ -29,6 +29,8 @@ class Cronjob extends DataObject
 	var $repeat_variation = 0;
 	var $name;
 	var $key;
+    
+    var $start_timestamp;
 
 	/**
 	 * @var array

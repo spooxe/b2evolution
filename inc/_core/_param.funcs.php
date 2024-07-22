@@ -1385,7 +1385,7 @@ function check_is_color( $color )
 	}
 }
 
-
+ //* DEBUG Deprecated */
 /**
  * Sets a date parameter with values from the request or to provided default,
  * And check we have a compact date (numbers only) ( used for URL filtering )
@@ -1398,7 +1398,7 @@ function check_is_color( $color )
  *
  * @return string the compact date value ( yyyymmdd )
  */
-function param_compact_date( $var, $default = '', $memorize = false, $err_msg, $required = false )
+function param_compact_date( $var, $err_msg, $default = '', $memorize = false,  $required = false )
 {
 	global $$var;
 
@@ -2189,20 +2189,30 @@ function regenerate_url( $ignore = '', $set = '', $pagefileurl = '', $glue = '&a
 	}
 
 	// Merge in the params we want to force to a specific value:
-	if( !empty( $set ) )
-	{	// We got some forced params:
-		// Transform set param into an array:
-		if( !is_array($set) )
-		{
-			if( $set[0] == '?' )
-			{ // Remove leading question mark, e.g. from QUERY_STRING
-				$set = substr($set, 1);
-			}
-			$set = preg_split( '~&(amp;)?~', $set, NULL, PREG_SPLIT_NO_EMPTY );
-		}
-		// Merge them in:
-		$params = array_merge( $params, $set );
-	}
+    //Deprecated: preg_split(): Passing null to parameter #3
+if (!empty($set)) {
+    // We got some forced params:
+    // Transform set param into an array:
+    if (!is_array($set)) {
+        // Ensure $set is a string before manipulating
+        if (is_string($set)) {
+            if (strpos($set, '?') === 0) {
+                // Remove leading question mark, e.g. from QUERY_STRING
+                $set = substr($set, 1);
+            }
+
+            // Split the string into an array by '&' or '&amp;'
+            $set = preg_split('~&(amp;)?~', $set, -1, PREG_SPLIT_NO_EMPTY);
+        } else {
+            // Handle the case where $set is not a string or array
+            // You may choose to skip or handle it differently
+            $set = [];
+        }
+    }
+
+    // Merge them in:
+    $params = array_merge($params, $set);
+}
 
 	// Construct URL:
 	if( ! empty($pagefileurl) )
@@ -2317,7 +2327,8 @@ function _trapError( $reset = 1 )
  *
  * @return string
  */
-function param_html( $var, $default = '', $memorize = false, $err_msg )
+  //* Deprecated Msg*/
+function param_html( $var, $err_msg, $default = '', $memorize = false )
 {
 
 }

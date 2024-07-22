@@ -25,12 +25,16 @@ load_funcs( 'widgets/_widgets.funcs.php' );
  *
  * @package evocore
  */
+
 class ComponentWidget extends DataObject
 {
 	/**
 	 * Widget container ID
 	 */
 	var $wico_ID;
+    
+    /**dynamic property*/   
+    var $renderers_validated;
 
 	var $order;
 	/**
@@ -105,6 +109,9 @@ class ComponentWidget extends DataObject
 	 * @var Mode: 'designer' or 'normal'
 	 */
 	var $mode = 'normal';
+    /**dynamic property*/
+    var $x_params;
+    var $herold;
 
 
 	/**
@@ -812,10 +819,63 @@ class ComponentWidget extends DataObject
 		// Add custom id if required, default to generic id for validation purposes:
 		$widget_ID = ( !empty($params[ 'widget_ID' ]) ? $params[ 'widget_ID' ] : 'widget_'.$this->type.'_'.$this->code.'_'.$this->ID );
 
-		// Replace the values:
-		$this->disp_params = str_replace( array( '$wi_ID$', '$wi_class$' ), array( $widget_ID, $widget_css_class ), $params );
-	}
+ 
+         if (isset($params['WidgetContainer'])) {
+                $x_params['WidgetContainer'] = clone $params['WidgetContainer'];
+                unset ($params['WidgetContainer']);
+                $herold = 'WidgetContainer';
+         }
+         
+         if (isset($params['CommentList'])) {
+                $x_params['CommentList'] = clone $params['CommentList'];
+                unset ($params['CommentList']);
+                $herold = 'CommentList';
+         }
+         if (isset($params['ItemList'])) {
+                $x_params['ItemList'] = clone $params['ItemList'];
+                unset ($params['ItemList']);
+                $herold = 'ItemList';
+         }
 
+         if (isset($params['Item'])) {
+                $x_params['Item'] = clone $params['Item'];
+                unset ($params['Item']);
+                $herold = 'Item';
+         }         
+         
+         $herold = NULL;  
+                   
+   
+   @$params = str_replace( array( '$wi_ID$', '$wi_class$' ), array( $widget_ID, $widget_css_class ), $params);
+   /*
+    foreach ($params as &$param) {
+        $param = $param ?? '';
+    $param = str_replace(
+        array('$wi_ID$', '$wi_class$'),
+        array($widget_ID, $widget_css_class),
+        $param
+    );
+    }   
+ */
+
+switch ( $herold ) {
+    case 'WidgetContainer':
+        $params['WidgetContainer'] = $x_params['WidgetContainer']; 
+        break;
+    case "CommentList":
+    $params['CommentList'] = $x_params['CommentList']; 
+        break;
+    case "ItemList":
+    $params['ItemList'] = $x_params['ItemList']; 
+        break;    
+    case "Item":
+    $params['Item'] = $x_params['Item']; 
+        break;
+}   
+    
+    $this->disp_params = $params; 
+
+    } 
 
 	/**
 	 * Convert old display params to new name.
@@ -1480,7 +1540,8 @@ class ComponentWidget extends DataObject
 			$widget_Blog = & $this->get_Blog();
 
 			// Convert active renderers options for plugin functions below:
-			$widget_renderers = array_keys( $this->disp_params['renderers'] );
+              $this->disp_params['renderers']= array();
+              $widget_renderers = array_keys( $this->disp_params['renderers'] );
 
 			$this->renderers_validated = $Plugins->validate_renderer_list( $widget_renderers, array(
 					'Blog'         => & $widget_Blog,

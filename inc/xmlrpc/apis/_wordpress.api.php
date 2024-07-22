@@ -1152,8 +1152,8 @@ function wp_newcomment( $m )
 			'author_url'		=> $options['author_url'],
 			'author_email'		=> $options['author_email'],
 		);
-
-	return xmlrpcs_new_comment( $params, $commented_Item );
+    # DEBUG Deprecated
+	return xmlrpcs_new_comment(  $commented_Item, $params );
 }
 
 
@@ -1225,8 +1225,8 @@ function wp_editcomment( $m )
 			'author_url'	=> isset($options['author_url']) ? $options['author_url'] : '',
 			'author_email'	=> isset($options['author_email']) ? $options['author_email'] : '',
 		);
-
-	return xmlrpcs_edit_comment( $params, $edited_Comment );
+     # DEBUG Deprecated
+	return xmlrpcs_edit_comment( $edited_Comment, $params );
 }
 
 

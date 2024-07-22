@@ -21,6 +21,7 @@ load_class( '_core/model/db/_sql.class.php', 'SQL' );
  * CommentQuery: help constructing queries on Comments
  * @package evocore
  */
+ 
 class CommentQuery extends SQL
 {
 	var $c;
@@ -43,7 +44,12 @@ class CommentQuery extends SQL
 	var $exact;
 
 	var $Blog;
-
+    /**dynamic property*/
+    var $dbtablename;
+    var $dbprefix;
+    var $dbIDname;
+    var $ymdhms_min;
+    var $ymdhms_max;
 
 	/**
 	 * Constructor.

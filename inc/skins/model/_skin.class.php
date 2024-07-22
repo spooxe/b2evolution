@@ -15,6 +15,7 @@
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
 
 
+
 load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
 
 
@@ -23,12 +24,15 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  *
  * @package evocore
  */
+
 class Skin extends DataObject
 {
 	var $name;
 	var $folder;
 	var $type;
 	var $class;
+        /**dynamic property*/
+    var $dynamic_styles;
 
 	/**
 	 * Skin version
@@ -733,7 +737,9 @@ class Skin extends DataObject
 				}
 
 				// Sort skin containers by order field:
-				uasort( $this->container_list, array( $this, 'sort_containers' ) );
+               # var_dump($this->container_list);
+               #bug
+				@uasort( $this->container_list, array( $this, 'sort_containers' ));
 			}
 			else
 			{	// Get containers from skin files:
@@ -741,7 +747,7 @@ class Skin extends DataObject
 				$this->discover_containers( false );
 			}
 		}
-
+        
 		return $this->container_list;
 	}
 

@@ -24,6 +24,7 @@ load_class( '_core/model/dataobjects/_dataobject.class.php', 'DataObject' );
  *
  * @package evocore
  */
+
 class Blog extends DataObject
 {
 	/**
@@ -205,6 +206,11 @@ class Blog extends DataObject
 	 *        Value - Collection ID or NULL for locale of this collection
 	 */
 	var $locales = NULL;
+    /**dynamic property*/
+    var $default_ItemType;
+    var $widget_containers;
+    var $enabled_item_types;
+    var $used_item_types;
 
 
 	/**
@@ -6816,7 +6822,7 @@ class Blog extends DataObject
 	 */
 	function get_msgform_additional_fields()
 	{
-		$msgform_additional_fields = trim( $this->get_setting( 'msgform_additional_fields' ) );
+		$msgform_additional_fields = trim( $this->get_setting( 'msgform_additional_fields' )??'' );
 
 		$saved_additional_fields = array();
 

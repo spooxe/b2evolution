@@ -70,6 +70,12 @@ class LinkOwner
 	 * @var integer Last order
 	 */
 	var $last_order = NULL;
+     /**dynamic property*/
+    var $tmp_ID;
+    
+ #   var $tmp_coll_ID;
+
+   
 
 
 	/**

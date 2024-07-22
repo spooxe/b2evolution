@@ -23,6 +23,10 @@ load_class( '_core/ui/_uiwidget.class.php', 'Widget' );
  */
 class Table extends Widget
 {
+		/**dynamic property*/
+	 public $cols;
+	 private $Form;
+
 	/**
 	 * Total number of pages
 	 */
@@ -95,6 +99,7 @@ class Table extends Widget
 		parent::__construct( $ui_template );
 
 		// Remove unexpected chars from prefix:
+         $param_prefix = $param_prefix ?? '';
 		$this->param_prefix = preg_replace( '#[^a-z0-9\-_]#i', '', $param_prefix );
 
 		$this->no_results_text = T_('No results').'.';

@@ -24,6 +24,10 @@ load_class( 'users/model/_userquery.class.php', 'UserQuery' );
  */
 class UserList extends DataObjectList2
 {
+		/**dynamic property*/
+		public $filterset_name;
+		public $order;
+		
 	/**
 	 * SQL object for the Query
 	 */
@@ -226,6 +230,8 @@ class UserList extends DataObjectList2
 			/*
 			 * Restrict by gender
 			 */
+             $this->default_filters['gender'] = ($this->default_filters['gender']??'');
+             $this->filters['gender'] = ($this->filters['gender']??'');
 			memorize_param( 'gender_men', 'integer', strpos( $this->default_filters['gender'], 'M' ) !== false, strpos( $this->filters['gender'], 'M' ) !== false );
 			memorize_param( 'gender_women', 'integer', strpos( $this->default_filters['gender'], 'F' ) !== false, strpos( $this->filters['gender'], 'F' ) !== false );
 			memorize_param( 'gender_other', 'integer', strpos( $this->default_filters['gender'], 'O' ) !== false, strpos( $this->filters['gender'], 'O' ) !== false );

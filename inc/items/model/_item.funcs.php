@@ -5080,6 +5080,9 @@ function delete_session_Item( $item_ID )
  */
 function prepare_item_content( $content )
 {
+    /**coalescing operator*/
+$content = $content ?? '';
+
 	// Convert the content separators to new format:
 	$old_separators = array(
 			'&lt;!--more--&gt;', '<!--more-->', '<p>[teaserbreak]</p>',

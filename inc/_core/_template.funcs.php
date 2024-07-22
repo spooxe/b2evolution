@@ -1265,11 +1265,16 @@ function get_require_url( $lib_file, $relative_to = 'rsc_url', $subfolder = 'js'
 		}
 		$lib_url = url_add_param( $lib_url, 'v='.$version );
 	}
-
-	if( preg_match( '~^https://~', $ReqURL ) )
-	{ // If base url is safe then fix all media urls to protocol-relative format:
-		$lib_url = preg_replace( '~^http://~', '//', $lib_url );
-	}
+ /* Deprecated Msg Check if $lib_url & $ReqURL is not null */
+  if ($ReqURL != '')         {
+if (preg_match('~^https://~', $ReqURL)) {
+    // Ensure $lib_url is not null
+    if ($lib_url !== null) {
+        // If base URL is safe, then fix all media URLs to protocol-relative format
+        $lib_url = preg_replace('~^http://~', '//', $lib_url);
+    }
+}
+}
 
 	return $lib_url;
 }

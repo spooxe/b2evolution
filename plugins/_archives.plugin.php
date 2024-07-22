@@ -25,6 +25,7 @@ load_class( '/items/model/_itemlistlight.class.php', 'ItemListLight' );
  *
  * This plugin displays
  */
+
 class archives_plugin extends Plugin
 {
 	/**
@@ -40,6 +41,11 @@ class archives_plugin extends Plugin
 	var $group = 'widget';
 	var $subgroup = 'navigation';
 	var $widget_icon = 'archive';
+    /**dynamic property*/
+    var $dbprefix;
+    var $dbIDname; 
+     
+
 
 
 	/**
@@ -367,6 +373,14 @@ class ArchiveList extends Results
 {
 	var $archive_mode;
 	var $arc_w_last;
+    
+     /**dynamic property*/
+    var $dbprefix;
+    var $dbIDname;
+    var $dbtable;
+    var $ItemQuery;
+    var $from;
+    var $where;   
 
 	/**
 	 * Constructor

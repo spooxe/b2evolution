@@ -33,6 +33,7 @@ $GLOBALS['debug_settings'] = false;
  * @abstract
  * @see UserSettings, GeneralSettings, PluginSettings, CollectionSettings
  */
+ 
 class AbstractSettings
 {
 	/**
@@ -58,6 +59,11 @@ class AbstractSettings
 	 * @access protected
 	 */
 	var $col_value_name;
+    
+     /**dynamic property*/
+    
+    var $count_col_key_names;
+    var $plugin_ID;
 
 
 	/**

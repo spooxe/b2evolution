@@ -200,8 +200,8 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 	{
 		if(is_string($err))
 		{
-			$str = $GLOBALS['xmlrpcstr']["multicall_${err}"];
-			$code = $GLOBALS['xmlrpcerr']["multicall_${err}"];
+			$str = $GLOBALS['xmlrpcstr']["multicall_{$err}"];
+			$code = $GLOBALS['xmlrpcerr']["multicall_{$err}"];
 		}
 		else
 		{
@@ -792,7 +792,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 			}
 			if(isset($wanted))
 			{
-				$msg = "Wanted ${wanted}, got ${got} at param ${pno}";
+				$msg = "Wanted {$wanted}, got {$got} at param {$pno}";
 				logIO($msg);
 				logIO( 'Method signatures: '.var_export($sig, true) );
 
@@ -800,7 +800,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 			}
 			else
 			{
-				$msg = "No method signature matches number of parameters, got ${numParams} expected ".implode(' or ', $exp_p);
+				$msg = "No method signature matches number of parameters, got {$numParams} expected ".implode(' or ', $exp_p);
 				logIO($msg);
 				logIO( 'Method signatures: '.var_export($sig, true) );
 
@@ -1102,7 +1102,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 					return new xmlrpcresp(
 						0,
 						$GLOBALS['xmlrpcerr']['incorrect_params'],
-						$GLOBALS['xmlrpcstr']['incorrect_params'] . ": ${errstr}"
+						$GLOBALS['xmlrpcstr']['incorrect_params'] . ": {$errstr}"
 					);
 				}
 			}

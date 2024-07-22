@@ -27,6 +27,8 @@ load_class( '/items/model/_itemlistlight.class.php', 'ItemListLight' );
  */
 class ItemList2 extends ItemListLight
 {
+
+	
 	/**
 	 * @var array
 	 */
@@ -39,6 +41,9 @@ class ItemList2 extends ItemListLight
 	 * @var integer
 	 */
 	var $nav_target;
+    /**dynamic property*/
+    var $list_mass_actions;
+    var $list_form_hiddens;
 
 	/**
 	 * Constructor

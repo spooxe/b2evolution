@@ -507,11 +507,12 @@ class ExplodeIterator implements Iterator {
 
 		$this->rewind();
 	}
+     // #[\ReturnTypeWillChange]
+public function rewind(): void {
+    $this->curPos = 0;
+    $this->endPos = strpos($this->subject, $this->delim);
+    $this->refreshCurrent();
 
-	function rewind() {
-		$this->curPos = 0;
-		$this->endPos = strpos( $this->subject, $this->delim );
-		$this->refreshCurrent();
 	}
 
 	function refreshCurrent() {
@@ -525,37 +526,38 @@ class ExplodeIterator implements Iterator {
 			$this->current = substr( $this->subject, $this->curPos, $this->endPos - $this->curPos );
 		}
 	}
-
-	function current() {
-		return $this->current;
-	}
-
-	function key() {
+     // #[\ReturnTypeWillChange]
+  public function current(): mixed {
+        return $this->data[$this->position];
+    }
+     // #[\ReturnTypeWillChange]
+	function key(): mixed{
 		return $this->curPos;
 	}
 
 	/**
 	 * @return string
 	 */
-	function next() {
-		if ( $this->endPos === false ) {
-			$this->curPos = false;
-		} else {
-			$this->curPos = $this->endPos + $this->delimLength;
-			if ( $this->curPos >= $this->subjectLength ) {
-				$this->endPos = false;
-			} else {
-				$this->endPos = strpos( $this->subject, $this->delim, $this->curPos );
-			}
-		}
-		$this->refreshCurrent();
-		return $this->current;
-	}
+      // #[\ReturnTypeWillChange]
+    public function next(): void {
+        if ($this->endPos === false) {
+            $this->curPos = false;
+        } else {
+            $this->curPos = $this->endPos + $this->delimLength;
+            if ($this->curPos >= $this->subjectLength) {
+                $this->endPos = false;
+            } else {
+                $this->endPos = strpos($this->subject, $this->delim, $this->curPos);
+            }
+        }
+        $this->refreshCurrent();
+    }
 
 	/**
 	 * @return bool
 	 */
-	function valid() {
-		return $this->curPos !== false;
-	}
+      // #[\ReturnTypeWillChange]
+    public function valid(): bool {
+        return $this->curPos !== false;
+    }
 }

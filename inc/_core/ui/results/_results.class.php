@@ -33,7 +33,10 @@ class Results extends Table
 	 * SQL query
 	 */
 	var $sql;
-
+	/**dynamic property*/
+private $force_checkboxes_to_inline;
+private $order;
+private $current_group_count ;
 	/**
 	 * SQL query to count total rows
 	 */
@@ -257,6 +260,8 @@ class Results extends Table
 	 * e.g., array( 'Checkbox set 1 label' => 'input[^=set1_]:checkbox', 'Checkbox set 2 label' => 'input[^=set2_]:checkbox' )
 	 */
 	var $checkbox_toggle_selectors;
+     /**dynamic property*/
+    var $Form;
 
 	/**
 	 * Constructor
@@ -662,7 +667,8 @@ class Results extends Table
 		// Arrays of size < 2 require no action.
 		if (count($array) < 2) return;
 		// Split the array in half
-		$halfway = count($array) / 2;
+	  $halfway = count($array) / 2;
+	  $halfway = (round($halfway, 0, PHP_ROUND_HALF_UP));
 		$array1 = array_slice($array, 0, $halfway);
 		$array2 = array_slice($array, $halfway);
 		// Recurse to sort the two halves
@@ -1282,7 +1288,7 @@ class Results extends Table
 					$this->display_col_start( array(), $row );
 				}
 
-
+                 //xx
 				// Contents to output:
 				$output = $this->parse_col_content( $col['td'] );
 				#pre_dump( '{'.$output.'}' );

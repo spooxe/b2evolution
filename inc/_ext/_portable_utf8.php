@@ -290,6 +290,7 @@ function utf8_clean( $str, $remove_bom = false )
 	//$regx = '/((?:[\x00-\x7F]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}){1,})|./';
 
 	$regx = '/([\x00-\x7F]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3})|./s';
+    $str ?? $str = '';
 	$str = preg_replace( $regx, '$1', $str );
 
 	if( $remove_bom )
@@ -1419,7 +1420,8 @@ function utf8_strtolower( $str )
 
 	if( mbstring_loaded() )
 	{
-		//Auto Removes Invalid UTF-8 Byte Sequances
+        /**coalescing operator*/
+		$str = $str ?? '';//Auto Removes Invalid UTF-8 Byte Sequances
 		return mb_strtolower( $str, 'UTF-8' );
 	}
 

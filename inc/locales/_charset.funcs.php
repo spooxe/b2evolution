@@ -133,7 +133,7 @@ function replace_special_chars( $str, $post_locale = NULL, $accept_period = fals
 		$newstr = convert_charset( $str, 'UTF-8', $evo_charset );
 		$newstr_charset = 'UTF-8';
 
-		$search = array( 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß', 'à', 'ç', 'è', 'é', 'ì', 'ò', 'ô', 'ù' ); // iso-8859-1
+		$search = array( '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?' ); // iso-8859-1
 		$replace = array( 'Ae', 'ae', 'Oe', 'oe', 'Ue', 'ue', 'ss', 'a', 'c', 'e', 'e', 'i', 'o', 'o', 'u' );
 
 		foreach( $search as $k => $v )

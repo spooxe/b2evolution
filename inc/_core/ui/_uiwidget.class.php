@@ -192,6 +192,7 @@ class Widget
 			case 'title':
 				// Results title:
 				// Espace $title$ strings from the title to avoid infinite loop replacing
+                 $this->title = $this->title ??'';
 				$escaped_title = str_replace( '$title$', '&#36;title&#36;', $this->title );
 				// Replace vars on the title
 				$result = $this->replace_vars( $escaped_title );

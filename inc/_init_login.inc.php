@@ -77,7 +77,7 @@ elseif( empty( $disable_http_auth ) && $Settings->get( 'http_auth_accept' ) && !
 	// Set action to simulate a form submit button like '<input type="submit" name="login_action[login]" >' for correct redirect after successful login:
 	$login_action = array( 'login' => '' );
 }
-
+$login = htmlspecialchars($login ?? '');
 $Debuglog->add( 'Login: login: '.var_export( htmlspecialchars( $login, ENT_COMPAT, $evo_charset ), true ), '_init_login' );
 $Debuglog->add( 'Login: pass: '.( empty( $pass ) ? '' : 'not' ).' empty', '_init_login' );
 

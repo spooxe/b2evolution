@@ -207,13 +207,22 @@ class social_links_Widget extends ComponentWidget
 		$icon_colors_classes = '';
 		if( ! empty( $this->disp_params['icon_colors'] ) )
 		{ // If at least one color status is selected
-			foreach( $this->disp_params['icon_colors'] as $class_name => $is_selected )
-			{
-				if( ! empty( $is_selected ) )
-				{
-					$icon_colors_classes .= ' ufld__'.$class_name.'color';
-				}
-			}
+// Ensure $icon_colors is an array before using foreach
+if (is_array($this->disp_params['icon_colors'])) {
+    foreach ($this->disp_params['icon_colors'] as $class_name => $is_selected) {
+        if (!empty($is_selected)) {
+            // Ensure class name is sanitized if necessary
+            $class_name = htmlspecialchars($class_name, ENT_QUOTES, 'UTF-8');
+            
+            // Append the class name to the result string
+            $icon_colors_classes .= ' ufld__' . $class_name . 'color';
+        }
+    }
+} else {
+    // Handle the case where $icon_colors is not an array
+    // For example, log an error or set a default value
+    $icon_colors_classes = ''; // Or some other default behavior
+}
 		}
 
 		$r = '';

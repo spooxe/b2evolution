@@ -617,7 +617,20 @@ class DB
 	 * Format a string correctly for safe insert under all PHP conditions
 	 */
 	function escape($str)
+    
 	{
+    if ($str !== null) {
+        $escaped_str = $this->dbhandle->real_escape_string($str);
+        return $escaped_str;
+                } else {
+    // Handle the case where $str is null, depending on your requirements
+                    return ; // or another default value
+}
+
+    
+        
+        
+        
 		return $this->dbhandle->real_escape_string($str);
 	}
 
@@ -972,8 +985,35 @@ class DB
 			$Timer->start( 'sql_query', false );
 
 			// Run query:
-			$this->result = @$this->dbhandle->query( $query );
+			//$this->result = $this->dbhandle->query( $query );
 
+                try {
+        $this->result = $this->dbhandle->query($query);
+        
+        if ($this->result === false) {
+            // Retrieve the error message
+            $error = $this->dbhandle->error;
+            
+            // Check if the error is related to a non-existent table
+            if (strpos($error, 'Table') !== false && strpos($error, 'doesn\'t exist') !== false) {
+                // Handle table does not exist error
+                throw new Exception("The specified table does not exist: $error");
+            } else {
+                // Handle other types of errors
+                throw new Exception("Database query error: $error");
+            }
+        }
+    } catch (Exception $e) {
+        // Log the error
+        error_log($e->getMessage());
+
+        // Optionally, handle the exception in another way
+        // For example, display a user-friendly message or rethrow the exception
+       # echo "An error occurred while executing the query. Please contact the administrator.";
+    }
+            
+            
+            
 			if( $this->log_queries )
 			{	// We want to log queries:
 				// Get duration for last query:
@@ -1877,6 +1917,7 @@ class DB
 				'shift_jis'    => 'sjis',
 				'tis-620'      => 'tis620',
 				'utf-8'        => 'utf8',
+                'utf8mb4'     => 'utf8mb4',               #added   uf8mb3 support
 				'windows-1250' => 'cp1250',
 				'windows-1251' => 'cp1251',
 				'windows-1252' => 'latin1',

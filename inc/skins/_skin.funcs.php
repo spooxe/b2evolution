@@ -33,6 +33,8 @@ function skin_init( $disp )
 	 * @var Blog
 	 */
 	global $Collection, $Blog;
+    
+
 
 	/**
 	 * @var Item
@@ -3046,7 +3048,7 @@ function skin_widget( $params )
 	 * @var ComponentWidget
 	 */
 	$Widget = new $widget_classname();	// COPY !!
-
+      # $pa = array($params); 
 	return $Widget->display( $params );
 }
 
@@ -3194,9 +3196,21 @@ function widget_container_customize_params( $params, $wico_code, $wico_name )
 	// Replace variables/masks in params with widget container properties;
 	// Possible variables/masks in params:
 	//   - $wico_class$ - Widget container class
-	$params = str_replace( '$wico_class$', 'evo_container__'.str_replace( ' ', '_', $wico_code ), $params );
 
-	return $params;
+    # $params['WidgetContainer'] = settype( $params['WidgetContainer'], "array" );
+     $cc_params['WidgetContainer'] = $params['WidgetContainer'];
+     unset($params['WidgetContainer'] );
+    # echo json_encode($params);
+	# $params = str_replace( '$wico_class$', 'evo_container__'.str_replace( ' ', '_', $wico_code ), $params ); 
+       
+       $xwico_code =  'evo_container__'.str_replace( ' ', '_', $wico_code );
+#var_dump($array);
+      @$params = str_replace( '$wico_class$', $xwico_code, $params );
+      $params['WidgetContainer'] = $cc_params['WidgetContainer']; 
+     
+    # $params['WidgetContainer'] = settype( $params['WidgetContainer'],"object" ); 
+    #  $params['WidgetContainer'] = (object) $params['WidgetContainer'];
+	 return $params;
 }
 
 

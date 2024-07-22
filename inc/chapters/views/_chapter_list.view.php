@@ -19,6 +19,7 @@ load_class( '_core/ui/_table.class.php', 'Table' );
 /**
  * @var Blog
  */
+
 global $Collection, $Blog;
 
 global $Settings;

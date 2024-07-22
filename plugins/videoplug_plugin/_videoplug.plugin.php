@@ -27,6 +27,9 @@ class videoplug_plugin extends Plugin
 	var $long_desc;
 	var $version = '7.2.5';
 	var $number_of_installs = 1;
+    /**dynamic property*/
+    var $video_width;
+    var $video_height;
 
 
 	/**

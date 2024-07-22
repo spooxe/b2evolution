@@ -12,13 +12,14 @@
  * @package plugins
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
-
+      
 
 /**
  * Calendar Plugin
  *
  * This plugin displays
  */
+  
 class calendar_plugin extends Plugin
 {
 	/**
@@ -29,12 +30,20 @@ class calendar_plugin extends Plugin
 	var $name;
 	var $code = 'evo_Calr';
 	var $priority = 20;
-	var $version = '7.2.5';
+	var $version = '8.2.12';
 	var $author = 'The b2evo Group';
 	var $group = 'widget';
 	var $subgroup = 'navigation';
 	var $widget_icon = 'calendar';
+    /**dynamic property*/
+    var $dbprefix;
+    var $dbIDname;
 
+
+  
+
+    
+    
 
   /**
 	 * @var ItemQuery
@@ -401,6 +410,27 @@ class calendar_plugin extends Plugin
  */
 class Calendar
 {
+        /**dynamic property*/
+    
+    var $dbtable;
+    var $classfile_path;
+    var $dbprefix;   
+    var $dbIDname;
+    var $ItemQuery;
+    var $linkpostcellstart;
+    var $linkposttodaycellstart;
+    var $todaycellstart;
+    var $todaycellstartpost;
+    var $postcount_month_atitle;
+    var $postcount_year_atitle;
+    var $postcount_month_atitle_one;
+    var $postcount_year_atitle_one;
+    
+    
+    
+    
+    
+    
 	var $year;
 
 	/**

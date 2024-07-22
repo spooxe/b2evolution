@@ -29,6 +29,7 @@ load_class( '_core/ui/_uiwidget.class.php', 'Widget' );
  *
  * @package evocore
  */
+  
 class Form extends Widget
 {
 	/**
@@ -128,8 +129,74 @@ class Form extends Widget
 	 * @var string
 	 */
 	var $form_type;
-
-
+    /**dynamic property*/
+    var $form_name ;
+    var $form_action;
+    var $form_method;
+    var $enctype;
+    var $layout;
+    var $template;
+    var $formclass;
+    var $formstart;
+    var $title_fmt;
+    var $no_title_fmt;
+    var $no_title_no_icons_fmt;
+    var $group_begin;
+    var $group_end;
+    var $fieldset_title;
+    var $fieldset_begin;
+    var $fieldset_end;
+    var $fieldstart;
+    var $labelclass;
+    var $labelstart;
+    var $labelend;
+    var $labelempty;
+    var $inputstart;
+    var $inputend;
+    var $infostart;
+    var $infoend;
+    var $fieldend;
+    var $buttonsstart;
+    var $buttonsend;
+    var $customstart;
+    var $customend;
+    var $note_format;
+    var $bottom_note_format;
+    var $formend;
+    var $fieldstart_checkbox;
+    var $fieldend_checkbox;
+    var $inputclass_checkbox;
+    var $inputstart_checkbox;
+    var $inputend_checkbox;
+    var $checkbox_newline_start;
+    var $checkbox_newline_end;
+    var $checkbox_basic_start;
+    var $checkbox_basic_end;
+    var $fieldstart_radio;
+    var $fieldend_radio;
+    var $inputclass_radio;
+    var $inputstart_radio;
+    var $inputend_radio;
+    var $radio_label_format;
+    var $radio_newline_start;
+    var $radio_newline_end;
+    var $radio_oneline_start;
+    var $radio_oneline_end;
+    var $existing_hiddens;
+    var $possible_hiddens_from_action;
+    var $btn_primary_is_used;
+    var $is_lined_fields;
+    var $current_group_ID;
+    var $current_group_item_num;
+    var $tab_pane_open;
+    var $tab_pane_close;
+    var $comments_disabled_before;
+    var $comments_disabled_after;
+    
+    
+    
+    
+    
 	/**
 	 * Constructor
 	 *
@@ -1621,6 +1688,7 @@ class Form extends Widget
 		{ // Make the date value clean for display:
 
 			// The date value may be compact, in this case we have to decompact it
+             $field_value = $field_value ??'';
 			if( preg_match( '/^[0-9]+$/', $field_value ) )
 			{	// The date is compact, so we decompact it
 				$field_value = decompact_date( $field_value );
@@ -1764,7 +1832,7 @@ class Form extends Widget
 	 * @param string CSS class for select
 	 * @param string Javascript to add for onchange event (trailing ";").
 	 */
-	function time_select( $field_name, $field_value = NULL, $precision = '5mn', $field_label, $field_note = NULL, $field_class = NULL, $field_onchange = NULL )
+	function time_select( $field_name, $field_value = NULL, $precision = '5mn', $field_label = NULL, $field_note = NULL, $field_class = NULL, $field_onchange = NULL )
 	{
 		preg_match( '#([0-9]+)(mn|s)#', $precision, $matches );
 
@@ -1863,7 +1931,7 @@ class Form extends Widget
 	 * @param integer increment for the loop (precision)
 	 * @param array params
 	 */
-	function _number_select( $field_value, $max, $precision = 1, $field_params )
+	function _number_select( $field_value, $max, $precision, $field_params )
 	{
 			$r	=	'<select'.get_field_attribs_as_string( $field_params ).'>';
 

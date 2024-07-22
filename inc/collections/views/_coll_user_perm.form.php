@@ -56,6 +56,7 @@ $SQL = get_coll_user_perms_SQL( $edited_Blog, $keywords );
 $Results = new Results( $SQL->get(), 'colluser_' );
 
 // Tell the Results class that we already have a form for this page:
+
 $Results->Form = & $Form;
 
 // Button to export user permissions into CSV file:

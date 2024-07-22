@@ -671,7 +671,7 @@ if( ! empty( $files_upgraded ) )
 	// which are not loaded yet when this script was started:
 	echo '<span class="small note">'.TB_('No footer is displayed here because we are in between 2 versions.').'</span>';
 }
-else
+else                               
 {
 	$AdminUI->disp_payload_end();
 

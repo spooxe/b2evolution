@@ -29,6 +29,10 @@ class table_contents_plugin extends Plugin
 	var $help_topic = 'table-of-contents-plugin';
 	var $widget_icon = 'list';
 	var $number_of_installs = 1;
+    /**dynamic property*/
+    var $cached_toc;
+    var $current_Item;
+    var $current_content;
 
 
 	/**

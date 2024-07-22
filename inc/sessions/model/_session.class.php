@@ -29,6 +29,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *
  * @package evocore
  */
+
 class Session
 {
 	/**
@@ -88,6 +89,8 @@ class Session
 	 * @var string
 	 */
 	var $sess_device;
+    /**dynamic property*/
+    var $first_hit_params;
 
 	/**
 	 * Constructor
