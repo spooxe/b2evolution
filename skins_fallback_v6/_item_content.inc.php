@@ -18,6 +18,11 @@ global $disp_detail;
 global $more;
 
 // Default params:
+// params need to be an array before array_merge
+if (!is_array($params)) {
+    $params = [];
+}
+
 $params = array_merge( array(
 		'content_mode'             => 'auto', // Can be 'excerpt', 'normal' or 'full'. 'auto' will auto select depending on backoffice SEO settings for $disp-detail
 		'intro_mode'               => 'normal', // Same as above. This will typically be forced to "normal" when displaying an intro section so that intro posts always display as normal there

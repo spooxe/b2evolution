@@ -532,9 +532,9 @@ $cat = ($cat ??'');
 		 */
 		$this->filters['ymdhms'] = param( $this->param_prefix.'m', '/^\d{4}(0[1-9]|1[0-2])?(?(1)(0[1-9]|[12][0-9]|3[01])?)(?(2)([01][0-9]|2[0-3])?)(?(3)([0-5][0-9]){0,2})$/', $this->default_filters['ymdhms'], true ); // YearMonth(Day) to display
 		$this->filters['week'] = param( $this->param_prefix.'w', '/^(0?[0-9]|[1-4][0-9]|5[0-3])$/', $this->default_filters['week'], true ); // Week number (0?0-53)
-
-		$this->filters['ymdhms_min'] = param_compact_date( $this->param_prefix.'dstart', $this->default_filters['ymdhms_min'], true, T_( 'Invalid date' ) ); // YearMonth(Day) to start at
-		$this->filters['ymdhms_max'] = param_compact_date( $this->param_prefix.'dstop', $this->default_filters['ymdhms_max'], true, T_( 'Invalid date' ) ); // YearMonth(Day) to stop at
+          //* DEBUG Deprecated */  //moved Parameter err_msg to pos 2
+		$this->filters['ymdhms_min'] = param_compact_date( $this->param_prefix.'dstart',T_( 'Invalid date' ), $this->default_filters['ymdhms_min'], true ); // YearMonth(Day) to start at
+		$this->filters['ymdhms_max'] = param_compact_date( $this->param_prefix.'dstop', T_( 'Invalid date' ), $this->default_filters['ymdhms_max'], true ); // YearMonth(Day) to stop at
 
 
 		/*

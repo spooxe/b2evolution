@@ -1385,7 +1385,7 @@ function check_is_color( $color )
 	}
 }
 
- //* DEBUG Deprecated */
+ //* DEBUG Deprecated */  moved err_msg to pos 2
 /**
  * Sets a date parameter with values from the request or to provided default,
  * And check we have a compact date (numbers only) ( used for URL filtering )
@@ -1398,17 +1398,18 @@ function check_is_color( $color )
  *
  * @return string the compact date value ( yyyymmdd )
  */
-function param_compact_date( $var, $err_msg, $default = '', $memorize = false,  $required = false )
+function param_compact_date( $var, $err_msg, $default = '', $memorize = false, $required = false )
 {
 	global $$var;
 
 	param( $var, 'string', $default, $memorize );
-
-	if( preg_match( '#^[0-9]{4,}$#', $$var ) )
-	{	// Valid compact date, all good.
-		return $$var;
-	}
-
+     //Deprecated: preg_match(): Passing null to parameter #2
+     if($$var != NULL) {
+	    if( preg_match( '#^[0-9]{4,}$#', $$var ) )
+	        {	// Valid compact date, all good.
+		    return $$var;
+	        }
+     }
 	// We do not have a compact date, try normal date matching:
 	$iso_date = param_check_date( $var, $err_msg, $required );
 

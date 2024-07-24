@@ -1234,7 +1234,9 @@ class item_fields_compare_Widget extends ComponentWidget
 	 */
 	function sort_custom_fields( $custom_field_a, $custom_field_b )
 	{
-		return $custom_field_a['order'] > $custom_field_b['order'];
+        //Deprecated warning This change ensures that the comparison function follows a consistent and predictable pattern for sorting.
+        return strcmp($custom_field_a['order'], $custom_field_b['order']);
+		//return $custom_field_a['order'] > $custom_field_b['order'];
 	}
 
 

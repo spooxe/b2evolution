@@ -177,6 +177,10 @@ function get_template_tag_params_from_string( $tag_param_strings, $default_param
 		}
 
 		// TODO: need to escape " and > from $tag_param_val, otherwise they will end up breaking something
+           // Uncaught TypeError: Cannot access offset of type string on string
+        if (!is_array($this_tag_params)) {
+            $this_tag_params = [];
+        }
 
 		$this_tag_params[$tag_param_name] = $tag_param_val;
 	}
@@ -864,6 +868,10 @@ function render_template_callback( $var, $params, $objects = array() )
 			break;
 
 		case 'Item:feedback_link':
+                    //Uncaught TypeError: array_merge(): Argument #2 must be of type array, string given
+            if (!is_array($params)) {
+                    $params = [];
+                    }
 			echo $rendered_Item->get_feedback_link( array_merge( array(
 					'show_in_single_mode' => true,
 				), $params ) );
@@ -878,6 +886,10 @@ function render_template_callback( $var, $params, $objects = array() )
 			break;
 
 		case 'Item:footer':
+            //Uncaught TypeError: array_merge(): Argument #2 must be of type array, string given
+            if (!is_array($params)) {
+                    $params = [];
+                    }
 			echo $rendered_Item->footer( array_merge( array( // Here, we make sure not to modify $params
 					'block_start' => '<div class="evo_post_footer">',
 					'block_end'   => '</div>',
@@ -973,6 +985,10 @@ function render_template_callback( $var, $params, $objects = array() )
 			break;
 
 		case 'Item:page_links':
+        // Uncaught TypeError: array_merge(): Argument #2 must be of type array, string given
+                if (!is_array($params)) {
+                    $params = [];
+                    }
 			echo $rendered_Item->get_page_links( array_merge( array(
 					'separator'   => '&middot; ',
 				), $params ) );

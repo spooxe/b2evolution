@@ -2506,7 +2506,8 @@ class Item extends ItemLight
 				'disppage'    => '#',
 				'stripteaser' => '#',
 				'format'      => 'htmlbody',
-			), $params );
+                // Uncaught TypeError: array_merge(): Argument #2 must be of type array, string given
+			), (array) $params);
 
 		$r = $this->get_content_teaser( $params['disppage'], $params['stripteaser'], $params['format'], $params );
 
@@ -2682,7 +2683,10 @@ class Item extends ItemLight
 	 * Display content extension of item (part after "[teaserbreak]")
 	 */
 	function content_extension( $params )
-	{
+	{     // Ensure $params is an array before merging
+            if (!is_array($params)) {
+                $params = [];
+                }
 		// Make sure we are not missing any param:
 		$params = array_merge( array(
 				'before'      => '',
@@ -3191,7 +3195,8 @@ class Item extends ItemLight
 			if( isset( $link_fallbacks[ $custom_field['link'] ] ) )
 			{
 				$fallback_count = count( $link_fallbacks[ $custom_field['link'] ] );
-				$link_class = trim( $custom_field['link_class'] );
+                //Deprecated: trim(): Passing null to parameter #1 ($string) of type string
+				$link_class = trim($custom_field['link_class'] ?? '');
 				$link_class_attr = ( $link_class === '' ? '' : ' class="'.format_to_output( $link_class, 'htmlattr' ).'"' );
 				$nofollow_attr = $custom_field['link_nofollow'] ? ' rel="nofollow"' : '';
 				foreach( $link_fallbacks[ $custom_field['link'] ] as $l => $link_fallback )
@@ -5879,7 +5884,8 @@ class Item extends ItemLight
 			$file_desc = '';
 			if( $params['display_file_desc'] && $File->exists() && strpos( $params['attach_format'].$params['file_link_format'], '$file_desc$' ) !== false )
 			{	// If description should be displayed:
-				$file_desc = nl2br( trim( $File->get( 'desc' ) ) );
+                 //Deprecated: trim(): Passing null to parameter #1 ($string) of type string
+				$file_desc = nl2br(trim($File->get('desc') ?? ''));
 				if( $file_desc !== '' )
 				{	// If file has a filled description:
 					$params['before_file_desc'].$file_desc.$params['after_file_desc'];
@@ -5890,10 +5896,12 @@ class Item extends ItemLight
 			$file_link_format = str_replace( array( '$icon$', '$file_name$', '$file_size$' ),
 				array( $icon, '$text$', $file_size ),
 				$params['file_link_format'] );
-			if( $params['file_link_text'] == 'filename' || trim( $File->get( 'title' ) ) === '' )
-			{	// Use file name for link text:
-				$file_link_text = $File->get_name();
-			}
+                 //Deprecated: trim(): Passing null to parameter #1 ($string) of type string
+                if ($params['file_link_text'] == 'filename' || trim($File->get('title') ?? '') === '') {
+                // Use file name for link text:
+                 $file_link_text = $File->get_name();
+                 }
+
 			else
 			{	// Use file title only if it filled:
 				$file_link_text = $File->get( 'title' );
@@ -13579,14 +13587,17 @@ class Item extends ItemLight
 
 		// Try to use a message from Collection setting:
 		$item_Blog = & $this->get_Blog();
-		$collection_msg = trim( $item_Blog->get_setting( 'comment_form_msg' ) );
+        //Deprecated: trim(): Passing null to parameter #1 ($string) of type string
+		$collection_msg = trim($item_Blog->get_setting('comment_form_msg') ?? '');
 		if( ! empty( $collection_msg ) )
 		{	// Use a message of the item type:
 			return $collection_msg;
 		}
 
 		// Try to use a message from Item Type setting:
-		$item_type_msg = trim( $this->get_type_setting( 'comment_form_msg' ) );
+        //Deprecated: trim(): Passing null to parameter #1 ($string) of type string
+		$comment_form_msg = trim($this->get_type_setting('comment_form_msg') ?? '');
+
 		if( ! empty( $item_type_msg ) )
 		{	// Use a message of the item type:
 			return $item_type_msg;

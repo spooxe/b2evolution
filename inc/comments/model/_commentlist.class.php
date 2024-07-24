@@ -321,9 +321,9 @@ class CommentList2 extends DataObjectList2
 
 		/*
 		 * Restrict to selected min and max dates:
-		 */
-		$this->filters['ymdhms_min'] = param_compact_date( $this->param_prefix.'dstart', $this->default_filters['ymdhms_min'], true, T_( 'Invalid date' ) ); // YearMonth(DayHourMinuteSecond) to start at
-		$this->filters['ymdhms_max'] = param_compact_date( $this->param_prefix.'dstop', $this->default_filters['ymdhms_max'], true, T_( 'Invalid date' ) ); // YearMonth(DayHourMinuteSecond) to stop at
+		 */    //* DEBUG Deprecated */    //moved Parameter err_msg to pos 2
+		$this->filters['ymdhms_min'] = param_compact_date( $this->param_prefix.'dstart', T_( 'Invalid date' ), $this->default_filters['ymdhms_min'], true ); // YearMonth(DayHourMinuteSecond) to start at
+		$this->filters['ymdhms_max'] = param_compact_date( $this->param_prefix.'dstop', T_( 'Invalid date' ), $this->default_filters['ymdhms_max'], true ); // YearMonth(DayHourMinuteSecond) to stop at
 
 		/*
 		 * Restrict to selected statuses:
