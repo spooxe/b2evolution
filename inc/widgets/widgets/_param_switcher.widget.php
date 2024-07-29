@@ -244,6 +244,8 @@ class param_switcher_Widget extends generic_menu_link_Widget
 
 		$button_is_active_by_default = false;
 		$active_button_value = NULL;
+        //Warning: foreach() argument must be of type array|object, string give
+        if (is_array($buttons) || is_object($buttons)) {
 		foreach( $buttons as $button )
 		{	// Display button:
 			if( $param_value === $button['value'] )
@@ -288,7 +290,7 @@ class param_switcher_Widget extends generic_menu_link_Widget
 				$active_button_value = $button['value'];
 			}
 		}
-
+        }
 		echo $this->get_layout_menu_wrapper( 'end' );
 
 		if( $this->get_param( 'allow_switch_js' ) )

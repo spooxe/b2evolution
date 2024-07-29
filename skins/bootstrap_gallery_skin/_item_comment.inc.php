@@ -11,8 +11,8 @@
  * @package evoskins
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
-
-
+ // Fatal error: Uncaught TypeError: array_merge(): Argument #2 must be of type array
+$params = isset($params) && is_array($params) ? $params : [];
 // Default params:
 $params = array_merge( array(
 		'comment_start'         => '<article class="evo_comment panel panel-default">',

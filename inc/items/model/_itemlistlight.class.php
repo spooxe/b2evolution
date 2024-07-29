@@ -72,6 +72,8 @@ class ItemListLight extends DataObjectList2
 	var $group_by_cat = 0;
      /**dynamic property*/
     var $filterset_name;
+    /**dynamic property*/
+    var $main_cat_ID;
 
 
 	/**
@@ -2475,20 +2477,31 @@ $cat = ($cat ??'');
 		{
 			$cover_image_params = array();
 		}
+         //Notice: Only variables should be passed by reference
+if ($params['attached_pics'] != 'none' && $params['disp_first_image'] == 'special') {
+    // Ensure $cover_image_params is an array
+    if (!is_array($cover_image_params)) {
+        $cover_image_params = array();
+    }
 
-		if( $params['attached_pics'] != 'none' && $params['disp_first_image'] == 'special' )
-		{	// We want to display first image separately before the title
-			// Display before/after even if there is no image so we can use it as a placeholder.
-			$this->display_list_images( array_merge( $params, array(
-					'before'      => $params['item_first_image_before'],
-					'after'       => $params['item_first_image_after'],
-					'placeholder' => $params['item_first_image_placeholder'],
-					'Item'        => $disp_Item,
-					'start'       => 1,
-					'limit'       => 1,
-				), $cover_image_params ),
-				$content_is_displayed );
-		}
+    // Merge parameters
+    $merged_params = array_merge(
+        $params,
+        array(
+            'before'      => $params['item_first_image_before'],
+            'after'       => $params['item_first_image_after'],
+            'placeholder' => $params['item_first_image_placeholder'],
+            'Item'        => $disp_Item,
+            'start'       => 1,
+            'limit'       => 1,
+        ),
+        $cover_image_params
+    );
+
+    // Pass the merged array to display_list_images
+    $this->display_list_images($merged_params, $content_is_displayed);
+}
+
 
 		// DISPLAY ITEM TITLE:
 
@@ -2598,6 +2611,11 @@ $cat = ($cat ??'');
 	 */
 	function display_list_images( & $content_is_displayed, $params = array() )
 	{
+            // Ensure $params is an array
+    if (!is_array($params)) {
+        $params = array(); // Default to an empty array if not already an array
+    }
+    
 		$params = array_merge( array(
 				'before'                     => '',
 				'after'                      => '',
@@ -2616,27 +2634,39 @@ $cat = ($cat ??'');
 			);
 
 		$disp_Item = & $params['Item'];
-		switch( $params[ 'item_pic_link_type' ] )
-		{	// Set url for picture link
-			case 'none':
-				$pic_url = NULL;
-				break;
+$disp_Item = isset($params['Item']) ? $params['Item'] : null;
 
-			case 'permalink':
-				$pic_url = $disp_Item->get_permanent_url();
-				break;
+if ($disp_Item !== null && is_object($disp_Item)) {
+    $item_pic_link_type = isset($params['item_pic_link_type']) ? $params['item_pic_link_type'] : 'default';
 
-			case 'linkto_url':
-				$pic_url = $disp_Item->url;
-				break;
+    switch ($item_pic_link_type) {
+        case 'none':
+            $pic_url = null;
+            break;
 
-			case 'auto':
-			default:
-				$pic_url = ( empty( $disp_Item->url ) ? $disp_Item->get_permanent_url() : $disp_Item->url );
-				break;
-		}
+        case 'permalink':
+            $pic_url = $disp_Item->get_permanent_url();
+            break;
 
-		if( $params['attached_pics'] != 'category' )
+        case 'linkto_url':
+            $pic_url = $disp_Item->url;
+            break;
+
+        case 'auto':
+        default:
+            $pic_url = empty($disp_Item->url) ? $disp_Item->get_permanent_url() : $disp_Item->url;
+            break;
+    }
+} else {
+    // Handle the case where $disp_Item is null or not an object
+    $pic_url = null; // or provide a default value, or handle it as necessary
+}
+
+// Further processing with $pic_url
+
+
+		//if( $params['attached_pics'] != 'category' )     old code
+        if (isset($params['attached_pics']) && $params['attached_pics'] != 'category')
 		{
 			// Get list of ALL attached files:
 			$LinkOwner = new LinkItem( $disp_Item );
@@ -2677,7 +2707,9 @@ $cat = ($cat ??'');
 		}
 		elseif( $params['limit'] == 1 )
 		{	// First picture is empty, fallback to category picture:
+           if ($disp_Item !== null) {  //changed
 			if( $main_Chapter = & $disp_Item->get_main_Chapter() )
+            
 			{	// If item has a main chapter:
 				$main_chapter_image_tag = $main_Chapter->get_image_tag( array(
 						'before'  => $params['before'],
@@ -2690,14 +2722,25 @@ $cat = ($cat ??'');
 					echo $main_chapter_image_tag;
 					$display_placeholder = false;
 				}
-			}
+			
+            }}
 		}
+         //Fatal error: Uncaught Error: Call to a member function get_permanent_url() on nul
 
-		if( $display_placeholder )
-		{	// Display placeholder if no images:
-			// Replace mask $item_permaurl$ with the item permanent URL:
-			echo str_replace( '$item_permaurl$', $disp_Item->get_permanent_url(), $params['placeholder'] );
-		}
+if ($display_placeholder) {
+    // Check if $disp_Item is not null
+    if ($disp_Item !== null) {
+        // Display placeholder if no images:
+        // Replace mask $item_permaurl$ with the item permanent URL:
+        echo str_replace('$item_permaurl$', $disp_Item->get_permanent_url(), $params['placeholder']);
+    } else {
+        // Handle the case when $disp_Item is null
+        error_log("Error: \$disp_Item is null. Cannot call get_permanent_url() on null.");
+        // Optionally, you can provide a default placeholder or URL if $disp_Item is null
+        echo str_replace('$item_permaurl$', '#', $params['placeholder']); // using '#' as a default URL
+    }
+}
+
 	}
 }
 ?>

@@ -16,7 +16,8 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 
 global $disp_detail;
 global $more;
-
+ // Fatal error: Uncaught TypeError: array_merge(): Argument #2 must be of type array
+$params = isset($params) && is_array($params) ? $params : [];
 // Default params:
 $params = array_merge( array(
 		'content_mode'             => 'auto', // Can be 'excerpt', 'normal' or 'full'. 'auto' will auto select depending on backoffice SEO settings for $disp-detail

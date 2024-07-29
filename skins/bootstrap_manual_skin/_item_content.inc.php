@@ -16,8 +16,13 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 
 global $disp_detail;
 global $more;
-
-// Default params:
+               //Fatal error: Uncaught TypeError: array_merge(): Argument #2 must be of type array, string given
+               // Ensure $params is an array
+if (!is_array($params)) {
+    // If $params is not set or not an array, initialize it as an empty array
+    $params = array();
+}
+               // Default params:
 $params = array_merge( array(
 		'content_mode'             => 'auto', // Can be 'excerpt', 'normal' or 'full'. 'auto' will auto select depending on backoffice SEO settings for $disp-detail
 		'intro_mode'               => 'normal', // Same as above. This will typically be forced to "normal" when displaying an intro section so that intro posts always display as normal there. Value '$content_mode$' to use exact value as above, may be used for disp=mustread.

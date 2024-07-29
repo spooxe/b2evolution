@@ -239,6 +239,7 @@ class Hit
     var $is_IE;
     var $is_gecko;
     var $is_firefox;
+    var $test_admin;
 
 
 	/**

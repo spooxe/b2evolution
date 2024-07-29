@@ -483,7 +483,14 @@ class EmailCampaign extends DataObject
 					$this->users['filter'][] = $user_data->user_ID;
 				}
 			}
-			elseif( check_usertags( $user_data->user_ID, explode( ',', $this->get( 'user_tag_sendskip' ) ), 'has_any' ) )
+            //Deprecated: explode(): Passing null to parameter #2 ($string)
+            $tags = $this->get('user_tag_sendskip');
+            $tags_array = [];
+
+                if (!is_null($tags) && $tags !== '') {
+                $tags_array = explode(',', $tags);
+                }
+			elseif (check_usertags($user_data->user_ID, $tags_array))
 			{	// This user will be skipped from receiving newsletter email because of skip tags:
 				if( ! $user_data->enls_subscribed )
 				{	// This user is unsubscribed from newsletter of this email campaign:

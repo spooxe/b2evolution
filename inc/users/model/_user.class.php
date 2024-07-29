@@ -60,6 +60,8 @@ class User extends DataObject
 	var $birthday_year;
 	var $birthday_month;
 	var $birthday_day;
+    /**dynamic property*/
+    var $flagged_items_count;
 
 	/**
 	 * User account status

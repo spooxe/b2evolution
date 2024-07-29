@@ -56,6 +56,8 @@ class Message extends DataObject
 	 * @var instance of Thread class
 	 */
 	var $Thread;
+    /**dynamic property*/
+    var $renderers_validated;
 
 
 	/**
