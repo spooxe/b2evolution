@@ -303,6 +303,9 @@ class Plugin
 	 * @var string
 	 */
 	var $widget_icon = 'puzzle-piece';
+    //Deprecated: Creation of dynamic property
+    var $widget_params;
+    var $current_widget_ID;
 
 	/**#@-*/
 

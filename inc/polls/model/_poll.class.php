@@ -28,6 +28,8 @@ class Poll extends DataObject
 	var $owner_user_ID;
 	var $question_text;
 	var $max_answers;
+    // Creation of dynamic property Poll::$owner_User is deprecated
+    var $owner_User;
 
 	/**
 	 * @var array PollOption objects

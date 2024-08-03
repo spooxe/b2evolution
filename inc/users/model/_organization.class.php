@@ -49,6 +49,8 @@ class Organization extends DataObject
 	 * @var string: 'owner and member', 'owner'
 	 */
 	var $perm_role = 'owner and member';
+     // Creation of dynamic property Organization::$owner_User is deprecated
+    var $owner_User;
 
 	/**
 	 * Constructor

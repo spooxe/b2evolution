@@ -28,6 +28,8 @@ class shortlinks_plugin extends Plugin
 	var $long_desc;
 	var $help_topic = 'wiki-links-plugin';
 	var $number_of_installs = 1;
+    // Deprecated: Creation of dynamic property shortlinks_plugin::$current_Item
+    var $current_Item;
     /**dynamic property*/
     //Deprecated: Creation of dynamic property shortlinks_plugin::$current_Item is deprecated
     private $current_item =null;

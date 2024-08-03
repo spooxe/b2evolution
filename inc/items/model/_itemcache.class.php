@@ -35,6 +35,7 @@ class ItemCache extends DataObjectCache
 	 */
 	var $items_by_cat_map = array();
 
+
 	/**
 	 * Constructor
 	 *
@@ -84,19 +85,25 @@ class ItemCache extends DataObjectCache
 		// - Alphabetical sorting by title or short title
 		// - Manual sorting by order field
 		$compare_method = ( $Chapter->get_subcat_ordering() == 'alpha' ? $order_alpha_func : 'compare_items_by_order' );
-
-		if( ! isset( $this->items_by_cat_map[$cat_ID]['sorted'][$compare_method] ) )
-		{	// Not sorted yet by requested method:
-			if( $Chapter->get_subcat_ordering() == 'manual' )
-			{	// If manual sorting by order field:
-				foreach( $this->items_by_cat_map[$cat_ID]['items'] as $i => $sorted_Item )
-				{	// Set temp var in order to know what category order use to compare:
-					$sorted_Item->sort_current_cat_ID = $cat_ID;
-				}
-			}
-			$this->items_by_cat_map[$cat_ID]['sorted'][$compare_method] = $this->items_by_cat_map[$cat_ID]['items'];
-			usort( $this->items_by_cat_map[$cat_ID]['sorted'][$compare_method], array( 'Item', $compare_method ) );
-		}
+     // Automatic conversion of false to array is deprecated     
+if (!isset($this->items_by_cat_map[$cat_ID]['sorted'][$compare_method])) {
+    // Not sorted yet by requested method:
+    if ($Chapter->get_subcat_ordering() == 'manual') {
+        // If manual sorting by order field:
+        foreach ($this->items_by_cat_map[$cat_ID]['items'] as $i => $sorted_Item) {
+            // Set temp var in order to know what category order use to compare:
+            $sorted_Item->sort_current_cat_ID = $cat_ID;
+        }
+    }
+    // Ensure that 'sorted' is initialized as an array
+    if (!isset($this->items_by_cat_map[$cat_ID]['sorted']) || !is_array($this->items_by_cat_map[$cat_ID]['sorted'])) {
+        $this->items_by_cat_map[$cat_ID]['sorted'] = [];
+    }
+    // Initialize the specific sort method array
+    $this->items_by_cat_map[$cat_ID]['sorted'][$compare_method] = $this->items_by_cat_map[$cat_ID]['items'];
+    usort($this->items_by_cat_map[$cat_ID]['sorted'][$compare_method], array('Item', $compare_method));
+}
+//
 
 		return $this->items_by_cat_map[$cat_ID]['sorted'][$compare_method];
 	}

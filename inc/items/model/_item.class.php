@@ -367,6 +367,7 @@ class Item extends ItemLight
     var $dbchanges_custom_fields;
     var $AfterItemUpdate_is_executed;
     var $previous_urltitle;
+        var $sort_current_cat_ID;
 
     
 
