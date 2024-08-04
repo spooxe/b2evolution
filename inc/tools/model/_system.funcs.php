@@ -580,7 +580,7 @@ function system_check_charset_update()
 {
 	global $DB, $evo_charset, $db_config, $tableprefix;
 
-	$expected_connection_charset = DB::php_to_mysql_charmap( 'utf8mb4' );
+	$expected_connection_charset = DB::php_to_mysql_charmap( 'utf8' );
 
 	$curr_db_charset = $DB->get_var( 'SELECT default_character_set_name
 		FROM information_schema.SCHEMATA
