@@ -28,3 +28,12 @@ media/import/logs
 /_backup
 _logs/
 .DS_Store
+conf/__basic_config.php
+conf/_advanced.php
+conf/_locales.php
+htsrv/getfile.php
+htsrv/rest.php
+inc/menus/views/_menu.form.php
+inc/rest/_restapi.class.php
+inc/tools/tools.ctrl.php
+media/shared/global/sunset/72849ka05.jpg
