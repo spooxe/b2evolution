@@ -228,8 +228,9 @@ class org_members_Widget extends ComponentWidget
 			// Get all users of the selected organization
 			$order_by = $this->disp_params['order_by'];
 			$users = $Organization->get_users( $order_by, true );
-
-			if( $this->disp_params['display_icons'] )
+            
+     // PHP Warning: foreach() argument must be of type array|object, string given
+/*			if( $this->disp_params['display_icons'] )
 			{ // Initialise css classes for icons depending on widget setting and only when they are displayed
 				$icon_colors_classes = '';
 				if( ! empty( $this->disp_params['icon_colors'] ) )
@@ -243,7 +244,25 @@ class org_members_Widget extends ComponentWidget
 					}
 				}
 			}
-
+ */
+ 
+ if( $this->disp_params['display_icons'] )
+{ 
+    // Initialize CSS classes for icons depending on widget setting and only when they are displayed
+    $icon_colors_classes = '';
+    
+    if( ! empty( $this->disp_params['icon_colors'] ) && is_array($this->disp_params['icon_colors']) )
+    { 
+        // If at least one color status is selected and icon_colors is an array
+        foreach( $this->disp_params['icon_colors'] as $class_name => $is_selected )
+        {
+            if( ! empty( $is_selected ) )
+            {
+                $icon_colors_classes .= ' ufld__'.$class_name.'color';
+            }
+        }
+    }
+}
 			if( count( $users ) )
 			{
 				echo $this->get_layout_start();
