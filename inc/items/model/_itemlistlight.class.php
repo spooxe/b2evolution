@@ -2726,7 +2726,7 @@ if ($disp_Item !== null && is_object($disp_Item)) {
             }}
 		}
          //Fatal error: Uncaught Error: Call to a member function get_permanent_url() on nul
-
+         // Error log message is turned off because default placeholder
 if ($display_placeholder) {
     // Check if $disp_Item is not null
     if ($disp_Item !== null) {
@@ -2735,7 +2735,7 @@ if ($display_placeholder) {
         echo str_replace('$item_permaurl$', $disp_Item->get_permanent_url(), $params['placeholder']);
     } else {
         // Handle the case when $disp_Item is null
-        error_log("Error: \$disp_Item is null. Cannot call get_permanent_url() on null.");
+    #    error_log("Error: \$disp_Item is null. Cannot call get_permanent_url() on null.");
         // Optionally, you can provide a default placeholder or URL if $disp_Item is null
         echo str_replace('$item_permaurl$', '#', $params['placeholder']); // using '#' as a default URL
     }

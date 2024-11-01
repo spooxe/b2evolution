@@ -49,6 +49,12 @@ class XHTML_Validator
 	var $stack = array();
 	var $last_checked_pos;
 	var $error;
+    // dynamic properties are deprecated
+    var $msg_type;
+    var $context;
+    var $encoding;
+    var $xml_parser_encoding;
+    
 
 	/**
 	 * Constructor
