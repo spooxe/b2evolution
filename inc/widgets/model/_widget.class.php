@@ -112,6 +112,8 @@ class ComponentWidget extends DataObject
     /**dynamic property*/
     var $x_params;
     var $herold;
+    
+    var $comment_author;
 
 
 	/**

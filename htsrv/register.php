@@ -832,6 +832,10 @@ require_js_defer('#jquery#');
 require_js_defer( 'src/evo_init_password_indicator.js', 'rsc_url' );
 
 require $adminskins_path.'login/_reg_form.main.php';
+  // Undefined array key "register_field_width"
+#display_password_indicator( array( 'field_width' => $params['register_field_width'] ) );
+display_password_indicator( array( 
+    'field_width' => $params['register_field_width'] ?? 'default_width'
+));
 
-display_password_indicator( array( 'field_width' => $params['register_field_width'] ) );
 ?>
