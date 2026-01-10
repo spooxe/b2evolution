@@ -44,7 +44,7 @@ error_reporting( E_ALL | E_STRICT );
  * You are welcome to change/override this if you know what you're doing.
  * This is turned on by default so that newbies can quote meaningful error messages in the forums.
  */
-$display_errors_on_production = true;
+$display_errors_on_production = false;
 
 
 /**
