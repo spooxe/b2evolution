@@ -236,7 +236,7 @@ class DataObjectCache
 		if( empty( $req_list ) )
 			return false;
 
-		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class().'->'.__FUNCTION__.'()' );
+		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class($this).'->'.__FUNCTION__.'()' );
 		$SQL->WHERE_and($this->dbIDname.( $invert ? ' NOT' : '' ).' IN ('.$DB->quote( $req_list ).')');
 
 		return $this->load_by_sql($SQL);
@@ -250,7 +250,7 @@ class DataObjectCache
 	 */
 	function load_where( $sql_where )
 	{
-		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class().'->'.__FUNCTION__.'()' );
+		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class($this).'->'.__FUNCTION__.'()' );
 		$SQL->WHERE($sql_where);
 		return $this->load_by_sql($SQL);
 	}
@@ -283,7 +283,7 @@ class DataObjectCache
 
 		if( empty( $SQL->title ) )
 		{	// Set SQL title for debug info:
-			$SQL->title = 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class().'->'.__FUNCTION__.'()';
+			$SQL->title = 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class($this).'->'.__FUNCTION__.'()';
 		}
 
 		return $this->instantiate_list( $DB->get_results( $SQL ) );
