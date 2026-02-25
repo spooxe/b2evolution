@@ -224,8 +224,8 @@ if (!isset($this->items_by_cat_map[$cat_ID]['sorted'][$compare_method])) {
 				$slugs[] = $ID_slug;
 			}
 		}
-
-		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class().'->'.__FUNCTION__.'()' );
+  // Calling get_class() without arguments is deprecated
+		$SQL = $this->get_SQL_object( 'Get the '.$this->objtype.' rows to load the objects into the cache by '.get_class($this).'->'.__FUNCTION__.'()' );
 		$sql_where = array();
 		if( ! empty( $IDs ) )
 		{	// Load Items by IDs:
