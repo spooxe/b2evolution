@@ -35,6 +35,7 @@ class Plugins_admin extends Plugins
 	/**
 	 * Load all plugins (not just enabled ones).
 	 */
+	public $log_register = false; // fixed for 8.3
 	var $sql_load_plugins_table = '
 			SELECT plug_ID, plug_priority, plug_classname, plug_code, plug_name, plug_shortdesc, plug_status, plug_version, plug_spam_weight
 			  FROM T_plugins
