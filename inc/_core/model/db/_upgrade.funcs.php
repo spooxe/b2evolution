@@ -223,72 +223,77 @@ function db_delta( $queries, $exclude_types = array(), $execute = false )
 		}
 
 		$prev_fld = '';
-		foreach( $flds as $create_definition )
-		{ // For every field line specified in the query
-			// Extract the field name
-			preg_match( '|^([^\s(]+)|', trim($create_definition), $match );
-			$fieldname = db_delta_remove_quotes($match[1]);
-			$fieldname_lowered = strtolower($fieldname);
+        foreach( $flds as $create_definition )
+        { // For every field line specified in the query
+            // Extract the field name – PHP 8.3 safe
+            $create_definition = trim( (string)$create_definition, ", \r\n\t" );
+            preg_match( '|^([^\s(]+)|', $create_definition, $match );
+            
+            if( !isset($match[1]) )
+            {
+                $match[1] = '';
+            }
+            
+            $fieldname = db_delta_remove_quotes($match[1]);
+            $fieldname_lowered = strtolower($fieldname);
 
-			$create_definition = trim($create_definition, ", \r\n\t");
+            if( in_array( $fieldname_lowered, array( '', 'primary', 'foreign', 'index', 'fulltext', 'unique', 'key' ) ) )
+            { // INDEX (but not in column_definition - those get handled later)
+                $add_index = array(
+                    'create_definition' => $create_definition,
+                );
 
-			if( in_array( $fieldname_lowered, array( '', 'primary', 'foreign', 'index', 'fulltext', 'unique', 'key' ) ) )
-			{ // INDEX (but not in column_definition - those get handled later)
-				$add_index = array(
-					'create_definition' => $create_definition,
-				);
+                if( !  preg_match( '~^(PRIMARY(?:\s+KEY)|(?:FULLTEXT|UNIQUE)(?:\s+(?:INDEX|KEY))?|KEY|INDEX) (?:\s+()     (\w+)      )? (\s+USING\s+\w+)? \s* \((.*)\)$~ix', $create_definition, $match )
+                    && ! preg_match( '~^(PRIMARY(?:\s+KEY)|(?:FULLTEXT|UNIQUE)(?:\s+(?:INDEX|KEY))?|KEY|INDEX) (?:\s+([`"])([\w\s]+)\\2)? (\s+USING\s+\w+)? \s* \((.*)\)$~ix', $create_definition, $match )
+                    && ! preg_match( '~^(FOREIGN\s+KEY) \s* \((.*)\) \s* (REFERENCES) \s* ([^( ]*) \s* \((.*)\) \s* (.*)$~ixs', $create_definition, $match ) )
+                { // invalid type, should not happen
+                    debug_die( 'Invalid type in $indices: '.$create_definition );
+                }
 
-				if( !  preg_match( '~^(PRIMARY(?:\s+KEY)|(?:FULLTEXT|UNIQUE)(?:\s+(?:INDEX|KEY))?|KEY|INDEX) (?:\s+()     (\w+)      )? (\s+USING\s+\w+)? \s* \((.*)\)$~ix', $create_definition, $match )
-					&& ! preg_match( '~^(PRIMARY(?:\s+KEY)|(?:FULLTEXT|UNIQUE)(?:\s+(?:INDEX|KEY))?|KEY|INDEX) (?:\s+([`"])([\w\s]+)\\2)? (\s+USING\s+\w+)? \s* \((.*)\)$~ix', $create_definition, $match )
-					&& ! preg_match( '~^(FOREIGN\s+KEY) \s* \((.*)\) \s* (REFERENCES) \s* ([^( ]*) \s* \((.*)\) \s* (.*)$~ixs', $create_definition, $match ) )
-				{ // invalid type, should not happen
-					debug_die( 'Invalid type in $indices: '.$create_definition );
-					// TODO: add test: Invalid type in $indices: KEY "coord" ("lon","lat")
-				}
+                if( $fieldname_lowered == 'foreign' )
+                { // Remember FOREIGN KEY fields, but they don't have to be indexed
+                    $reference_table_name = db_delta_remove_quotes(preg_replace( $DB->dbaliases, $DB->dbreplaces, $match[4] ));
+                    $foreign_key_fields[] = array( 'fk_fields' => $match[2], 'reference_table' => $reference_table_name, 'reference_columns' => $match[5], 'fk_definition' => $match[6], 'create' => true );
+                    continue;
+                }
 
-				if( $fieldname_lowered == 'foreign' )
-				{ // Remember FOREIGN KEY fields, but they don't have to be indexed
-					$reference_table_name = db_delta_remove_quotes(preg_replace( $DB->dbaliases, $DB->dbreplaces, $match[4] ));
-					$foreign_key_fields[] = array( 'fk_fields' => $match[2], 'reference_table' => $reference_table_name, 'reference_columns' => $match[5], 'fk_definition' => $match[6], 'create' => true );
-					continue;
-				}
+                $add_index['keyword'] = $match[1];
+                $add_index['name'] = strtoupper($match[3] ?? '');
+                $add_index['type'] = $match[4] ?? ''; 
+                $add_index['col_names'] = isset($match[5]) ? explode( ',', $match[5] ) : array();
 
-				$add_index['keyword'] = $match[1];
-				$add_index['name'] = strtoupper($match[3]);
-				$add_index['type'] = $match[4]; // "USING [type_name]"
-				$add_index['col_names'] = explode( ',', $match[5] );
-				foreach( $add_index['col_names'] as $k => $v )
-				{
-					$add_index['col_names'][$k] = strtolower(db_delta_remove_quotes(trim($v)));
-				}
+                foreach( $add_index['col_names'] as $k => $v )
+                {
+                    $add_index['col_names'][$k] = strtolower(db_delta_remove_quotes(trim($v)));
+                }
 
-				if( $fieldname_lowered == 'primary' )
-				{ // Remember PRIMARY KEY fields to be indexed (used for NULL check)
-					$primary_key_fields = $add_index['col_names'];
-					$add_index['is_PK'] = true;
-				}
-				else
-				{
-					$add_index['is_PK'] = false;
-				}
-				$fields_with_keys = array_unique( array_merge( $fields_with_keys, $add_index['col_names'] ) );
+                if( $fieldname_lowered == 'primary' )
+                { // Remember PRIMARY KEY fields to be indexed (used for NULL check)
+                    $primary_key_fields = $add_index['col_names'];
+                    $add_index['is_PK'] = true;
+                }
+                else
+                {
+                    $add_index['is_PK'] = false;
+                }
+                $fields_with_keys = array_unique( array_merge( $fields_with_keys, $add_index['col_names'] ) );
 
-				$indices[] = $add_index;
-			}
-			else
-			{ // "normal" field, add it to the field array
-				$wanted_fields[ strtolower($fieldname_lowered) ] = array(
-						'field' => $create_definition,
-						'where' => ( empty($prev_fld) ? 'FIRST' : 'AFTER '.$prev_fld ),
-					);
-				$prev_fld = $fieldname;
+                $indices[] = $add_index;
+            }
+            else
+            { // "normal" field, add it to the field array
+                $wanted_fields[ strtolower($fieldname_lowered) ] = array(
+                        'field' => $create_definition,
+                        'where' => ( empty($prev_fld) ? 'FIRST' : 'AFTER '.$prev_fld ),
+                    );
+                $prev_fld = $fieldname;
 
-				if( preg_match( '~^\S+\s+(VARCHAR|TEXT|BLOB)~i', $create_definition ) )
-				{
-					$has_variable_length_field = true;
-				}
-			}
-		}
+                if( preg_match( '~^\S+\s+(VARCHAR|TEXT|BLOB)~i', $create_definition ) )
+                {
+                    $has_variable_length_field = true;
+                }
+            }
+        }
 
 
 		// INDEX STUFF:
