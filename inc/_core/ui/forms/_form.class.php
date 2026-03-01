@@ -226,21 +226,21 @@ class Form extends Widget
 
 		// Add any GET params from $form_action as hidden inputs (GET forms only)
 		// Otherwise those params would be overwritten by the form submit and lost.
-		if( strpos( $this->form_action, '?' ) !== false && $this->form_method == 'get' )
-		{
-			$pos_args = strpos( $this->form_action, '?' );
-			$query_str = substr( $this->form_action, $pos_args + 1 );
-			// Split args by "&" (but leave "&amp;" alone).
-			$query_args = preg_split( '~&(?!amp;)~', $query_str, -1, PREG_SPLIT_NO_EMPTY );
-			foreach( $query_args as $query_arg )
-			{
-				list( $field_name, $field_value ) = explode( '=', $query_arg, 2 );
-				// Remember all pairs, and add them in end_form (so that used fieldnames can be skipped):
-				$this->possible_hiddens_from_action[] = array( $field_name, $field_value );
-			}
-			// Remove params.
-			$this->form_action = substr( $form_action, 0, $pos_args );
-		}
+        if( strpos( (string)$this->form_action, '?' ) !== false && $this->form_method == 'get' )
+        {
+            $pos_args = strpos( (string)$this->form_action, '?' );
+            $query_str = substr( (string)$this->form_action, $pos_args + 1 );
+            // Split args by "&" (but leave "&amp;" alone).
+            $query_args = preg_split( '~&(?!amp;)~', $query_str, -1, PREG_SPLIT_NO_EMPTY );
+            foreach( $query_args as $query_arg )
+            {
+                list( $field_name, $field_value ) = explode( '=', $query_arg, 2 );
+                // Remember all pairs, and add them in end_form (so that used fieldnames can be skipped):
+                $this->possible_hiddens_from_action[] = array( $field_name, $field_value );
+            }
+            // Remove params.
+            $this->form_action = substr( (string)$this->form_action, 0, $pos_args );
+        }
 	}
 
 
