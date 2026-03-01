@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file implements functions useful for upgrading DB schema.
  *
@@ -17,7 +18,7 @@
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
 
-
+ 
 /**
  * Get the delta query to adjust the current database according to a given (list of)
  * "CREATE TABLE"-, "CREATE DATABASE"-, "INSERT"- or "UPDATE"-statement(s).
@@ -66,7 +67,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *        are needed (e.g., 'UPDATE' before we can change "NULL" setting).
  */
 function db_delta( $queries, $exclude_types = array(), $execute = false )
-{
+{  
 	global $Debuglog, $DB, $debug;
 
 	if( ! is_array($queries) )
@@ -294,8 +295,7 @@ foreach( $flds as $create_definition )
         }
     }
 }
-
-
+        
 		// INDEX STUFF:
 
 		/**
@@ -425,7 +425,9 @@ foreach( $flds as $create_definition )
 			foreach( $indices as $k => $index )
 			{
 				$pattern = $index_pattern;
-				if( ! preg_match( '~^\w+\s+[^(]~', $index['create_definition'], $match ) )
+                
+                
+				if( ! preg_match( '~^\w+\s+[^(]~', (string) $index['create_definition'], $match ) )
 				{ // no key name given, make the name part optional, if it's the default one:
 					// (Default key name seems to be the first column, eventually with "_\d+"-suffix)
 					$auto_key = db_delta_remove_quotes(strtoupper($index['col_names'][0]));
@@ -445,7 +447,8 @@ foreach( $flds as $create_definition )
 				$pattern .= '\s*\(\s*'.$index_columns.'\s*\)';
 
 				#pre_dump( '~'.$pattern.'~i', trim($index['create_definition']) );
-				if( preg_match( '~'.$pattern.'~i', trim($index['create_definition']) ) )
+				//if( preg_match( '~'.$pattern.'~i', trim($index['create_definition']) ) )
+                if( preg_match('~'.$pattern.'~i', trim($index['create_definition'] ?? '')) )
 				{ // This index already exists: remove the index from our indices to create
 					unset($indices[$k]);
 					unset($obsolete_indices[$index_name]);
@@ -595,15 +598,15 @@ foreach( $flds as $create_definition )
 				}
 				$field_to_parse = $match[3];
 
-				// There's a bug with a "NOT NULL" field reported as "NULL", work around it (http://bugs.mysql.com/bug.php?id=20910):
-				if( $fieldtype == 'TIMESTAMP' )
-				{
-					$ct_sql = $DB->get_var( 'SHOW CREATE TABLE '.$table, 1, 0 );
-					if( preg_match( '~^\s*`'.$tablefield->Field.'`\s+TIMESTAMP\s+(NOT )?NULL~im', $ct_sql, $match ) )
-					{
-						$tablefield->Null = empty($match[1]) ? 'YES' : 'NO';
-					}
-				}
+                // There's a bug with a "NOT NULL" field reported as "NULL", work around it (http://bugs.mysql.com/bug.php?id=20910): PHP 8.3 safe
+                if( $fieldtype == 'TIMESTAMP' )
+                {
+                    $ct_sql = $DB->get_var( 'SHOW CREATE TABLE '.$table, 1, 0 );
+                    if( $ct_sql !== null && preg_match( '~^\s*`'.$tablefield->Field.'`\s+TIMESTAMP\s+(NOT )?NULL~im', (string)$ct_sql, $match ) )
+                    {
+                        $tablefield->Null = empty($match[1]) ? 'YES' : 'NO';
+                    }
+                }
 			}
 			elseif( preg_match( '~^'.$pattern_field.'\s+ (CHAR|VARCHAR|BINARY|VARBINARY) \s* \( ([\d\s]+) \) (\s+ (BINARY|ASCII|UNICODE) )? (.*)$~ix', $column_definition, $match ) )
 			{
